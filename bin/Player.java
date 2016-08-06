@@ -11,7 +11,7 @@ public class Player extends GameObject {
     public Player(int x, int y, ID id, Handler handler) {
 	super(x, y, id, handler);
 	img = null;
-	img = Game.images.imageList.get(14);
+	img = Game.images.imageList.get(9);
 	if (img != null){
 	    HEIGHT = img.getHeight();
 	    WIDTH = img.getWidth();
