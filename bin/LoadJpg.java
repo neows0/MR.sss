@@ -20,7 +20,7 @@ public class LoadJpg {
 	imageList = new ArrayList<BufferedImage>();
 	final File folder = new File("../images");
 	listFilesForFolder(folder);
-	load("../images/1.png");
+	//load("../images/1.png");
     }
 
     public static LoadJpg getInstance(){
@@ -48,6 +48,7 @@ public class LoadJpg {
 	    //g.drawImage(img, 10, 10, null);
 	} catch (IOException e) {
 	    System.out.println("Error in loading picture");
+	    System.out.println(filename);
 	}
 	return img;
     }

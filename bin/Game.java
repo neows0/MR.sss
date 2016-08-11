@@ -14,10 +14,12 @@ public class Game extends Canvas implements Runnable{
 
     private static final long serialVersionUID = 1550691097823471818L;
 
-    public static final int WIDTH = 640,
+    public static final int WIDTH = 1000,
 	HEIGHT = WIDTH / 12 * 9;
 
     public static LoadJpg images = LoadJpg.getInstance();
+
+    public static final int gravity = 2;
 
     public static int LVLWIDTH;
     public static int LVLHEIGHT;

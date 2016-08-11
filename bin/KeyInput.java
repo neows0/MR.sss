@@ -8,6 +8,7 @@ public class KeyInput extends KeyAdapter{
     private boolean APressed;
     private boolean SPressed;
     private boolean DPressed;
+    private boolean Space;
     
 
     public KeyInput(){
@@ -15,6 +16,7 @@ public class KeyInput extends KeyAdapter{
 	APressed = false;
 	SPressed = false;
 	DPressed = false;
+	Space = false;
     }
     
     public void keyPressed(KeyEvent e){
@@ -27,6 +29,7 @@ public class KeyInput extends KeyAdapter{
 	if(key == KeyEvent.VK_S) SPressed = true;
 	if(key == KeyEvent.VK_A) APressed = true;
 	if(key == KeyEvent.VK_D) DPressed = true;
+	if(key == KeyEvent.VK_SPACE) Space = true; 
 
     }
 
@@ -37,6 +40,7 @@ public class KeyInput extends KeyAdapter{
 	if(key == KeyEvent.VK_S) SPressed = false;
 	if(key == KeyEvent.VK_A) APressed = false;
 	if(key == KeyEvent.VK_D) DPressed = false;
+	if(key == KeyEvent.VK_SPACE) Space = false;
 	
     }
 
@@ -44,5 +48,6 @@ public class KeyInput extends KeyAdapter{
     public boolean getA(){ return APressed; }
     public boolean getS(){ return SPressed; }
     public boolean getD(){ return DPressed; }
+    public boolean getSpace(){ return Space; }
     
 }

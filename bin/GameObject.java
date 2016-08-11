@@ -1,16 +1,19 @@
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public abstract class GameObject {
-    protected int x, y;
+    protected int x, y, z;
     protected ID id;
-    protected int dX, dY;
+    protected int dX, dY, dZ;
     protected int HEIGHT, WIDTH;
+    public BufferedImage img;
     Handler handler;
 
     public GameObject(int x, int y, ID id, Handler handler) {
 	this.x = x;
 	this.y = y;
+	z = 0;
 	this.id = id;
 	this.handler = handler;
     }
