@@ -43,7 +43,7 @@ public class Game extends Canvas implements Runnable{
 	input = new KeyInput();
 	this.addKeyListener(input);
 	
-	new Window(WIDTH, HEIGHT, "Let's Build a game!", this);	
+	new Window(WIDTH, HEIGHT, "mrSSS", this);	
 
 	//hud = new HUD();
 	
