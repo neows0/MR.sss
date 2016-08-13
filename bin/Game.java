@@ -29,7 +29,7 @@ public class Game extends Canvas implements Runnable{
     private boolean running = false;
 
     private Random r;
-    private Handler handler;
+    private static Handler handler;
     private BufferedImage backGround;
 
     HUD hud;  //THIS I THINK COULD BE CHANGED
@@ -51,8 +51,17 @@ public class Game extends Canvas implements Runnable{
 
 	//r.nextInt(WIDTH - 32)
 	//r.nextInt(HEIGHT - 32)
-	handler.addObject(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler));
-	//handler.addObject(new BasicEnemy(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.BasicEnemy, handler));
+	Player temp = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler);
+	handler.addObject(temp);
+	
+	//int j = 0;
+	for (int i = 0; i < 100; i++){
+	    int j = r.nextInt(500);
+	    int k = r.nextInt(1400);
+	    if (!temp.getBounds().contains(j, k, 200, 200))
+		handler.addObject(new Tree(j, k, ID.Obstacle, handler));
+	}
+	
     }
     
     public synchronized void start(){
@@ -124,6 +133,7 @@ public class Game extends Canvas implements Runnable{
 	    System.out.println("player in null");
 	}
 	else {
+	    /*
 	    int x = temp.getX() - WIDTH / 2;
 	    int y = temp.getY() - HEIGHT / 2;
 	    if (x < 0)
@@ -133,7 +143,12 @@ public class Game extends Canvas implements Runnable{
 	    if (y < 0)
 		y = 0;
 	    else if (y + HEIGHT > LVLHEIGHT)
-		y = LVLHEIGHT - HEIGHT;
+	    y = LVLHEIGHT - HEIGHT;*/
+	    int [] array = { 0, 0 };
+	    screenLoc(array);
+
+	    int x = array[0];
+	    int y = array[1];
 		
 	    g.drawImage(backGround, 0, 0, WIDTH, HEIGHT,
 			x, y, WIDTH + x, HEIGHT + y, null);
@@ -141,16 +156,38 @@ public class Game extends Canvas implements Runnable{
 
 	//g.drawImage(backGround, 0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, null);
 
-	
-
 	//hud.render(g); //below so that it can override the handler's render
 	
-	handler.render(g);
-
-	
+	handler.render(g);	
 	
 	g.dispose();
 	bs.show();
+    }
+
+    //stupid java not allowing pass by refrence!!!
+    public static void screenLoc(int[] array){ //the array should be x and y
+	GameObject temp = handler.findByID(ID.Player);
+	int x;
+	int y;
+	if (temp == null){
+	    x = 0;
+	    y = 0;
+	    System.out.println("player in null");
+	}
+	else {
+	    x = temp.getX() - WIDTH / 2;
+	    y = temp.getY() - HEIGHT / 2;
+	    if (x < 0)
+		x = 0;
+	    else if (x + WIDTH > LVLWIDTH)
+		x = LVLWIDTH - WIDTH;
+	    if (y < 0)
+		y = 0;
+	    else if (y + HEIGHT > LVLHEIGHT)
+		y = LVLHEIGHT - HEIGHT;
+	}
+	array[0] = x;
+	array[1] = y;
     }
 
     public static int clamp(int var, int min, int max) {

@@ -8,14 +8,18 @@ import java.awt.image.BufferedImage;
 public class Player extends GameObject {
 
     private BufferedImage shadow;
-    private int inAir;
-    public static final int maxJump = 100;
+    //private int inAir;
+    //public static final int maxJump = 100;
+    private boolean forward = true;
+    private boolean backward = false;
+    private boolean left = false;
+    private boolean right = false;
     
     public Player(int x, int y, ID id, Handler handler) {
 	super(x, y, id, handler);
-	inAir = 0;
+	//inAir = 0;
 	img = null;
-	img = Game.images.imageList.get(9);
+	img = Game.images.imageList.get(20);
 	shadow = Game.images.imageList.get(18);
 	if (img != null){
 	    HEIGHT = img.getHeight();
@@ -32,26 +36,61 @@ public class Player extends GameObject {
 	return new Rectangle(x, y, WIDTH, HEIGHT);
     }
 
-    public void hit(GameObject collided){
-	//HUD.HEALTH -= 2;
-	//HUD.HEALTH = Game.clamp(HUD.HEALTH, 0, 100);
+    public void hit(GameObject collided){ 
+        if (collided.getId() == ID.Obstacle){/*
+	    int tX = collided.getX();
+	    int tY = collided.getY();
+	    int tW = (int)collided.getBounds().getWidth();
+	    int tH = (int)collided.getBounds().getHeight();
+	    
+
+	    if (tX + tW / 2 > x - (int)getBounds().getWidth() / 2
+		&& tX - tW / 2 < x + (int)getBounds().getWidth() / 2)
+		if (dX != 0)
+		    x -= dX;
+	    if (tY + tH / 2 > y - (int)getBounds().getHeight() / 2
+		&& tY - tH / 2 < y + (int)getBounds().getHeight() / 2)
+		y -= dY;
+					  */
+	    /*
+	    if (collided.getX() < x)
+		x = collided.getX() + (int)collided.getBounds().getWidth() / 2
+		    + WIDTH / 2;
+	    else
+		x = collided.getX() - (int)collided.getBounds().getWidth() / 2
+		    - WIDTH / 2;
+	    if (collided.getY() < y)
+		y = collided.getY() + (int)collided.getBounds().getHeight() / 2
+		    + HEIGHT / 2;
+	    else
+		y = collided.getY() - (int)collided.getBounds().getHeight() / 2
+		- HEIGHT / 2;*/
+	    
+	    //System.out.println("collided");
+	}
+	
     }
 
     @Override
     public void tick() {
+	
 	if (Game.input.getW() && Game.input.getS())
 	    dY = 0;
-	else if (Game.input.getW())
+	else if (Game.input.getW()){
 	    dY = -5;
-	else if (Game.input.getS())
+	}
+	else if (Game.input.getS()){
 	    dY = 5;
+	}
 	else
 	    dY = 0;
 
 	if (Game.input.getA() && Game.input.getD())
 	    dX = 0;
-	else if (Game.input.getA())
+	else if (Game.input.getA()){
 	    dX = -5;
+	    
+	}
 	else if (Game.input.getD())
 	    dX = 5;
 	else
@@ -61,6 +100,32 @@ public class Player extends GameObject {
 	    if (z <= 0)
 		dZ = 15;
 	}
+
+	if (dY > 0){
+	    forward = true;
+	    backward = false;
+	}
+	else if (dY < 0) {
+	    forward = false;
+	    backward = true;
+	}
+	else if (dX != 0) {
+	    forward = false;
+	    backward = false;
+	}
+	if (dX > 0 ) {
+	    left = false;
+	    right = true;
+	}
+	else if (dX < 0) {
+	    left = true;
+	    right = false;
+	}
+	else if (dY != 0) {
+	    left = false;
+	    right = false;
+	}
+	
 
 	z += dZ;
 	x += dX;
@@ -119,11 +184,32 @@ public class Player extends GameObject {
 	int W = shadow.getWidth();
 	g.drawImage(shadow, tempX + z / 2,
 		    tempY + HEIGHT / 2 - H / 2, tempX + W + z / 2,
-		    tempY + HEIGHT / 2 + H / 2, 0, 0, H, W, null);
+		    tempY + HEIGHT / 2 + H / 2,
+		    0, 0, W, H, null);
 	//g2d.rotate(-3.14/2);
 	//else if (tempAir <= maxJump * 2)
 	//tempAir = 0;
-	g.drawImage(img, tempX - WIDTH / 2,
+	
+	if (left && forward)
+	    temp = Game.images.imageList.get(24);
+	else if (left && backward)
+	    temp = Game.images.imageList.get(27);
+	else if (right && forward)
+	    temp = Game.images.imageList.get(25);
+	else if (right && backward)
+	    temp = Game.images.imageList.get(26);
+	else if (left)
+	    temp = Game.images.imageList.get(23);
+	else if (right)
+	    temp = Game.images.imageList.get(22);
+	else if (forward)
+	    temp = Game.images.imageList.get(20);
+	else if (backward)
+	    temp = Game.images.imageList.get(21);
+	else
+	    System.out.println("no direction");
+	
+	g.drawImage(temp, tempX - WIDTH / 2,
 		    tempY - HEIGHT / 2 - z, tempX + WIDTH / 2,
 		    tempY + HEIGHT / 2 - z, 0, 0, WIDTH, HEIGHT, null);
     }
