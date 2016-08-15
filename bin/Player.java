@@ -14,13 +14,20 @@ public class Player extends GameObject {
     private boolean backward = false;
     private boolean left = false;
     private boolean right = false;
+    private int jumpCooldown = 0;
     
     public Player(int x, int y, ID id, Handler handler) {
 	super(x, y, id, handler);
 	//inAir = 0;
 	img = null;
-	img = Game.images.imageList.get(20);
-	shadow = Game.images.imageList.get(18);
+	//img = Game.images.imageList.get(20);
+	//shadow = Game.images.imageList.get(18);
+	imgs = Game.images.getDir("player");
+	if (imgs == null)
+	    System.out.println("Error");
+	HEIGHT = imgs.get(4).getHeight();
+	WIDTH = imgs.get(4).getWidth();
+	/*
 	if (img != null){
 	    HEIGHT = img.getHeight();
 	    WIDTH = img.getWidth();
@@ -29,6 +36,7 @@ public class Player extends GameObject {
 	    HEIGHT = 110;
 	    WIDTH = 72;
 	}
+	*/
 	
     }
 
@@ -97,8 +105,14 @@ public class Player extends GameObject {
 	    dX = 0;
 
 	if (Game.input.getSpace()){
-	    if (z <= 0)
+	    if (z <= 0 && jumpCooldown == 0){
 		dZ = 15;
+		jumpCooldown = 20;
+	    }
+	}
+
+	if (jumpCooldown != 0){
+	    jumpCooldown--;
 	}
 
 	if (dY > 0){
@@ -165,7 +179,7 @@ public class Player extends GameObject {
 	else if (y > Game.LVLHEIGHT - Game.HEIGHT / 2)
 	    tempY = y - (Game.LVLHEIGHT - Game.HEIGHT);
 
-	BufferedImage temp = shadow;
+	BufferedImage temp = imgs.get(8);
 
 	//AffineTransform xform = new AffineTransform();
 	//xform.translate(.5*HEIGHT, .5*WIDTH);
@@ -180,16 +194,16 @@ public class Player extends GameObject {
 	//g2d.drawImage(temp, 0, 0, 100, 100, null);
 	*/
 
-	int H = shadow.getHeight();
-	int W = shadow.getWidth();
-	g.drawImage(shadow, tempX + z / 2,
+	int H = imgs.get(8).getHeight();
+	int W = imgs.get(8).getWidth();
+	g.drawImage(imgs.get(8), tempX + z / 2,
 		    tempY + HEIGHT / 2 - H / 2, tempX + W + z / 2,
 		    tempY + HEIGHT / 2 + H / 2,
 		    0, 0, W, H, null);
 	//g2d.rotate(-3.14/2);
 	//else if (tempAir <= maxJump * 2)
 	//tempAir = 0;
-	
+	/*
 	if (left && forward)
 	    temp = Game.images.imageList.get(24);
 	else if (left && backward)
@@ -207,6 +221,25 @@ public class Player extends GameObject {
 	else if (backward)
 	    temp = Game.images.imageList.get(21);
 	else
+	System.out.println("no direction");*/
+
+	if (left && forward)
+	    temp = imgs.get(4);//Game.images.imageList.get(24);
+	else if (left && backward)
+	    temp = imgs.get(7);//Game.images.imageList.get(27);
+	else if (right && forward)
+	    temp = imgs.get(5);//Game.images.imageList.get(25);
+	else if (right && backward)
+	    temp = imgs.get(6);//Game.images.imageList.get(26);
+	else if (left)
+	    temp = imgs.get(3);//Game.images.imageList.get(23);
+	else if (right)
+	    temp = imgs.get(2);//Game.images.imageList.get(22);
+	else if (forward)
+	    temp = imgs.get(0);//Game.images.imageList.get(20);
+	else if (backward)
+	    temp = imgs.get(1);//Game.images.imageList.get(21);
+	else
 	    System.out.println("no direction");
 	
 	g.drawImage(temp, tempX - WIDTH / 2,
@@ -214,7 +247,7 @@ public class Player extends GameObject {
 		    tempY + HEIGHT / 2 - z, 0, 0, WIDTH, HEIGHT, null);
     }
 
-
+    /*
     public static BufferedImage rotateCw( BufferedImage img )
     {
 	int width  = img.getWidth();
@@ -226,5 +259,5 @@ public class Player extends GameObject {
 		newImage.setRGB( height-1-j, i, img.getRGB(i,j) );
  
 	return newImage;
-    }
+    }*/
 }

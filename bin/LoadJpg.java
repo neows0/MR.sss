@@ -16,11 +16,28 @@ public class LoadJpg {
 
     public List<BufferedImage> imageList;
 
+    public List<String> dirNames;
+
+    private List<List<BufferedImage> > images;
+
     private LoadJpg(){
 	imageList = new ArrayList<BufferedImage>();
+	images = new ArrayList<List<BufferedImage> >();
+	//images.add(new ArrayList<BufferedImage>());
+	dirNames = new ArrayList<String>();
 	final File folder = new File("../images");
 	listFilesForFolder(folder);
 	//load("../images/1.png");
+    }
+
+    public List<BufferedImage> getDir(String dirName) {
+	for (int i = 0; i < dirNames.size(); i++){
+	    //System.out.println("looking for " + dirName);
+	    if (dirNames.get(i).equals(dirName)){
+		return images.get(i);
+	    }
+	}
+	return null;
     }
 
     public static LoadJpg getInstance(){
@@ -28,17 +45,6 @@ public class LoadJpg {
 	    instance = new LoadJpg();
 	}
 	return instance;
-    }
-    
-    public static BufferedImage load(){
-	BufferedImage img = null;
-	try {
-	    img = ImageIO.read(new File("pixel_practice.png"));
-	    //g.drawImage(img, 10, 10, null);
-	} catch (IOException e) {
-	    System.out.println("Error in loading picture");
-	}
-	return img;
     }
 
     public static BufferedImage load(String filename){
@@ -56,6 +62,9 @@ public class LoadJpg {
     public void listFilesForFolder(final File folder) {
 	for (final File fileEntry : folder.listFiles()) {
 	    if (fileEntry.isDirectory()) {
+		images.add(new ArrayList<BufferedImage>());
+		dirNames.add(fileEntry.getName());
+		//System.out.println(fileEntry.getName());
 		listFilesForFolder(fileEntry);
 	    } else {
 		readFile(fileEntry.getPath());
@@ -66,9 +75,17 @@ public class LoadJpg {
      public void readFile(String filename) {
         BufferedImage img = null;
 	try {
-	    img = ImageIO.read(new File(filename));
+	    File temp = new File(filename);
+	    img = ImageIO.read(temp);
 	    imageList.add(img);
-	    //g.drawImage(img, 10, 10, null);
+	    //System.out.println(Integer.toString(images.size()));
+	    if (getDir(temp.getParentFile().getName()) != null)
+		getDir(temp.getParentFile().getName()).add(img);
+	    else {
+		images.add(new ArrayList<BufferedImage>());
+		dirNames.add(temp.getParentFile().getName());
+		getDir(temp.getParentFile().getName()).add(img);
+	    }
 	} catch (IOException e) {
 	    System.out.println("Error in loading picture");
 	    System.out.println(e);

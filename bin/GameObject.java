@@ -1,6 +1,8 @@
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.ArrayList;
 
 public abstract class GameObject {
     protected int x, y, z;
@@ -8,6 +10,7 @@ public abstract class GameObject {
     protected int dX, dY, dZ;
     protected int HEIGHT, WIDTH;
     public BufferedImage img;
+    public List<BufferedImage> imgs;
     Handler handler;
 
     public GameObject(int x, int y, ID id, Handler handler) {

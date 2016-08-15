@@ -56,7 +56,7 @@ public class Game extends Canvas implements Runnable{
 	
 	//int j = 0;
 	for (int i = 0; i < 100; i++){
-	    int j = r.nextInt(500);
+	    int j = r.nextInt(1000);
 	    int k = r.nextInt(1400);
 	    if (!temp.getBounds().contains(j, k, 200, 200))
 		handler.addObject(new Tree(j, k, ID.Obstacle, handler));

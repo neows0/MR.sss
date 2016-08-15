@@ -1,6 +1,8 @@
-
+import java.util.Comparator;
+import java.util.Collections;
 import java.awt.Graphics;
 import java.util.LinkedList;
+
 
 /*advance all objects and print them to the screen*/
 public class Handler {
@@ -9,6 +11,13 @@ public class Handler {
     public static GameObject player;
     
     public void tick(){
+	
+	Collections.sort(objects, new Comparator<GameObject>() {
+		@Override
+		public int compare(GameObject GO2, GameObject GO1) {
+		    return ((Integer)(GO2.getY())).compareTo((Integer)(GO1.getY()));
+		}
+	    });
 	for(int i = 0; i < objects.size(); i++){
 	    objects.get(i).tick();
 	}
