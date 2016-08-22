@@ -6,5 +6,6 @@ public enum ID {
     BasicEnemy(),
     Enemy(),
     Trail(),
+    Item(),
     Obstacle();
 }

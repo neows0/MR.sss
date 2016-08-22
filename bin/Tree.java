@@ -10,7 +10,7 @@ public class Tree extends GameObject {
     public Tree(int x, int y, ID id, Handler handler) {
 	super(x, y, id, handler);
 	img = null;
-	img = Game.images.imageList.get(16);
+	img = Game.images.imageList.get(7);
 	if (img != null){
 	    HEIGHT = img.getHeight();
 	    WIDTH = img.getWidth();
@@ -22,7 +22,7 @@ public class Tree extends GameObject {
     }
 
     public Rectangle getBounds(){
-	return new Rectangle(x, y + HEIGHT / 2, WIDTH, HEIGHT / 2);
+	return new Rectangle(x - WIDTH / 2, y, WIDTH, HEIGHT / 2);
     }
 
     public void hit(GameObject collided){

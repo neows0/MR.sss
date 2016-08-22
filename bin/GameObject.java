@@ -12,8 +12,10 @@ public abstract class GameObject {
     public BufferedImage img;
     public List<BufferedImage> imgs;
     Handler handler;
+    protected Direction facing;
 
     public GameObject(int x, int y, ID id, Handler handler) {
+	facing = new Direction();
 	this.x = x;
 	this.y = y;
 	z = 0;
@@ -49,6 +51,9 @@ public abstract class GameObject {
     public void setDY(int dY){
 	this.dY = dY;
     }
+    public void setDir(Direction facing){this.facing = facing;}
+
+    public Direction getDir() {return this.facing;}
 
      public int getX() {
 	return x;
@@ -65,5 +70,4 @@ public abstract class GameObject {
     public ID getId(){
 	return id;
     }
-    
 }

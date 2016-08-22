@@ -14,8 +14,10 @@ public class Game extends Canvas implements Runnable{
 
     private static final long serialVersionUID = 1550691097823471818L;
 
-    public static final int WIDTH = 1000,
-	HEIGHT = WIDTH / 12 * 9;
+    public static final int SCRNWIDTH = 1000,
+	SCRNHEIGHT = SCRNWIDTH / 12 * 9;
+     public static final int WIDTH = 750,
+	HEIGHT = SCRNHEIGHT;
 
     public static LoadJpg images = LoadJpg.getInstance();
 
@@ -24,6 +26,7 @@ public class Game extends Canvas implements Runnable{
     public static int LVLWIDTH;
     public static int LVLHEIGHT;
     public static KeyInput input;
+    public static MouseInput mouse;
 
     private Thread thread;
     private boolean running = false;
@@ -32,34 +35,53 @@ public class Game extends Canvas implements Runnable{
     private static Handler handler;
     private BufferedImage backGround;
 
+    private Menu menu;
+    
+    public enum STATE {
+	Menu,
+	Game
+    };
+
+    public STATE gameState = STATE.Game;
+
     HUD hud;  //THIS I THINK COULD BE CHANGED
     
     public Game(){
-	backGround = images.imageList.get(12);//LoadJpg.load("background.png");
+	//backGround = images.imageList.get(12);//LoadJpg.load("background.png");
+	backGround = images.getDir("background").get(0);
 	LVLWIDTH = backGround.getWidth();
 	LVLHEIGHT = backGround.getHeight();
 	
 	handler = new Handler();
 	input = new KeyInput();
+	mouse = new MouseInput();
+	menu = new Menu(this);
 	this.addKeyListener(input);
+	this.addMouseListener(mouse);
+	this.addMouseWheelListener(mouse);
 	
-	new Window(WIDTH, HEIGHT, "mrSSS", this);	
+	new Window(SCRNWIDTH, SCRNHEIGHT, "mrSSS", this);	
 
 	//hud = new HUD();
 	
 	r = new Random();
 
-	//r.nextInt(WIDTH - 32)
-	//r.nextInt(HEIGHT - 32)
-	Player temp = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler);
-	handler.addObject(temp);
+	if (gameState == STATE.Game){
 	
-	//int j = 0;
-	for (int i = 0; i < 100; i++){
-	    int j = r.nextInt(1000);
-	    int k = r.nextInt(1400);
-	    if (!temp.getBounds().contains(j, k, 200, 200))
-		handler.addObject(new Tree(j, k, ID.Obstacle, handler));
+
+	    //r.nextInt(WIDTH - 32)
+	    //r.nextInt(HEIGHT - 32)
+	    Player temp = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler);
+	    handler.addObject(temp);
+	
+	    //int j = 0;
+	    /*
+	    for (int i = 0; i < 100; i++){
+		int j = r.nextInt(1000);
+		int k = r.nextInt(1400);
+		if (!temp.getBounds().contains(j - 100, k - 100, 200, 200))
+		    handler.addObject(new Tree(j, k, ID.Obstacle, handler));
+		    }*/
 	}
 	
     }
@@ -109,10 +131,16 @@ public class Game extends Canvas implements Runnable{
     }
 
     private void tick(){
-	handler.tick();
+	if (gameState == STATE.Game){
+	    handler.tick();
+	}
+	else if (gameState == STATE.Menu){
+	    menu.tick();
+	}
 	//hud.tick();
     }
 
+   
     private void render(){
 	BufferStrategy bs = this.getBufferStrategy();
 	if(bs == null){
@@ -125,40 +153,31 @@ public class Game extends Canvas implements Runnable{
 	//g.setColor(Color.black);//this is the background
 	//g.fillRect(0, 0, WIDTH, HEIGHT);
 
+	if (gameState == STATE.Game){
 	
-	GameObject temp = handler.findByID(ID.Player);
-	if (temp == null){
-	    g.drawImage(backGround, 0, 0, WIDTH, HEIGHT,
-			0, 0, WIDTH, HEIGHT, null);
-	    System.out.println("player in null");
-	}
-	else {
-	    /*
-	    int x = temp.getX() - WIDTH / 2;
-	    int y = temp.getY() - HEIGHT / 2;
-	    if (x < 0)
-		x = 0;
-	    else if (x + WIDTH > LVLWIDTH)
-		x = LVLWIDTH - WIDTH;
-	    if (y < 0)
-		y = 0;
-	    else if (y + HEIGHT > LVLHEIGHT)
-	    y = LVLHEIGHT - HEIGHT;*/
-	    int [] array = { 0, 0 };
-	    screenLoc(array);
-
-	    int x = array[0];
-	    int y = array[1];
+	    GameObject temp = handler.findByID(ID.Player);
+	    if (temp == null){
+		g.drawImage(backGround, 0, 0, WIDTH, HEIGHT,
+			    0, 0, WIDTH, HEIGHT, null);
+		System.out.println("player in null");
+	    }
+	    else {
+	    
+		int [] array = { 0, 0 };
+		screenLoc(array);
+	    
+		int x = array[0];
+		int y = array[1];
 		
-	    g.drawImage(backGround, 0, 0, WIDTH, HEIGHT,
-			x, y, WIDTH + x, HEIGHT + y, null);
-	}
-
-	//g.drawImage(backGround, 0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, null);
-
-	//hud.render(g); //below so that it can override the handler's render
+		g.drawImage(backGround, 0, 0, WIDTH, HEIGHT,
+			    x, y, WIDTH + x, HEIGHT + y, null);
+	    }
 	
-	handler.render(g);	
+	    handler.render(g);
+	}
+	else if (gameState == STATE.Menu){
+	    menu.render(g);
+	}
 	
 	g.dispose();
 	bs.show();
