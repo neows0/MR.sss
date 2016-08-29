@@ -6,8 +6,8 @@ import java.awt.Graphics2D;
 
 public class BasicEnemy extends GameObject {
 
-    public BasicEnemy(int x, int y, ID id, Handler handler) {
-	super(x, y, id, handler);
+    public BasicEnemy(int x, int y, ID id) {
+	super(x, y, id);
 
 	dX = 5;
 	dY = 5;

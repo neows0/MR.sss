@@ -19,21 +19,24 @@ public class Game extends Canvas implements Runnable{
      public static final int WIDTH = 750,
 	HEIGHT = SCRNHEIGHT;
 
-    public static LoadJpg images = LoadJpg.getInstance();
+    //public static LoadJpg images = LoadJpg.getInstance();
+
+    public static DirLoader images;
 
     public static final int gravity = 2;
-
-    public static int LVLWIDTH;
-    public static int LVLHEIGHT;
+    
     public static KeyInput input;
     public static MouseInput mouse;
-
     private Thread thread;
     private boolean running = false;
+    public static Toolbar toolBar;
+    public static Player player;
+
+    //private BufferedImage backGround;
+
+    public static Room lvl;
 
     private Random r;
-    private static Handler handler;
-    private BufferedImage backGround;
 
     private Menu menu;
     
@@ -43,45 +46,30 @@ public class Game extends Canvas implements Runnable{
     };
 
     public STATE gameState = STATE.Game;
-
-    HUD hud;  //THIS I THINK COULD BE CHANGED
+    
     
     public Game(){
-	//backGround = images.imageList.get(12);//LoadJpg.load("background.png");
-	backGround = images.getDir("background").get(0);
-	LVLWIDTH = backGround.getWidth();
-	LVLHEIGHT = backGround.getHeight();
+	images = new DirLoader("../images");
+	if (images.getDir("background") == null){
+	    System.out.println("couldn't find background");
+	}
 	
-	handler = new Handler();
 	input = new KeyInput();
 	mouse = new MouseInput();
 	menu = new Menu(this);
+	
 	this.addKeyListener(input);
 	this.addMouseListener(mouse);
 	this.addMouseWheelListener(mouse);
 	
-	new Window(SCRNWIDTH, SCRNHEIGHT, "mrSSS", this);	
-
-	//hud = new HUD();
+	new Window(SCRNWIDTH, SCRNHEIGHT, "mrSSS", this);
 	
 	r = new Random();
 
 	if (gameState == STATE.Game){
-	
-
-	    //r.nextInt(WIDTH - 32)
-	    //r.nextInt(HEIGHT - 32)
-	    Player temp = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler);
-	    handler.addObject(temp);
-	
-	    //int j = 0;
-	    /*
-	    for (int i = 0; i < 100; i++){
-		int j = r.nextInt(1000);
-		int k = r.nextInt(1400);
-		if (!temp.getBounds().contains(j - 100, k - 100, 200, 200))
-		    handler.addObject(new Tree(j, k, ID.Obstacle, handler));
-		    }*/
+	    player = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player);
+	    lvl = new Room(player);
+	    toolBar = new Toolbar(player);
 	}
 	
     }
@@ -132,7 +120,13 @@ public class Game extends Canvas implements Runnable{
 
     private void tick(){
 	if (gameState == STATE.Game){
-	    handler.tick();
+	    if (lvl != null){
+		lvl.tick();
+	    }
+	    //handler.tick();
+	    if (toolBar != null){
+		toolBar.tick();
+	    }
 	}
 	else if (gameState == STATE.Menu){
 	    menu.tick();
@@ -154,26 +148,15 @@ public class Game extends Canvas implements Runnable{
 	//g.fillRect(0, 0, WIDTH, HEIGHT);
 
 	if (gameState == STATE.Game){
-	
-	    GameObject temp = handler.findByID(ID.Player);
-	    if (temp == null){
-		g.drawImage(backGround, 0, 0, WIDTH, HEIGHT,
-			    0, 0, WIDTH, HEIGHT, null);
-		System.out.println("player in null");
+
+	    if (lvl != null){
+		lvl.render(g);
 	    }
-	    else {
-	    
-		int [] array = { 0, 0 };
-		screenLoc(array);
-	    
-		int x = array[0];
-		int y = array[1];
-		
-		g.drawImage(backGround, 0, 0, WIDTH, HEIGHT,
-			    x, y, WIDTH + x, HEIGHT + y, null);
+	    if (toolBar != null) {
+		toolBar.render(g);
 	    }
-	
-	    handler.render(g);
+	    
+	    //handler.player.invRender(g);
 	}
 	else if (gameState == STATE.Menu){
 	    menu.render(g);
@@ -185,28 +168,30 @@ public class Game extends Canvas implements Runnable{
 
     //stupid java not allowing pass by refrence!!!
     public static void screenLoc(int[] array){ //the array should be x and y
-	GameObject temp = handler.findByID(ID.Player);
-	int x;
-	int y;
-	if (temp == null){
-	    x = 0;
-	    y = 0;
-	    System.out.println("player in null");
-	}
-	else {
-	    x = temp.getX() - WIDTH / 2;
-	    y = temp.getY() - HEIGHT / 2;
-	    if (x < 0)
+	GameObject temp = player;
+	if (temp != null) {
+	    int x;
+	    int y;
+	    if (temp == null){
 		x = 0;
-	    else if (x + WIDTH > LVLWIDTH)
-		x = LVLWIDTH - WIDTH;
-	    if (y < 0)
 		y = 0;
-	    else if (y + HEIGHT > LVLHEIGHT)
-		y = LVLHEIGHT - HEIGHT;
+		System.out.println("player in null");
+	    }
+	    else {
+		x = temp.getX() - WIDTH / 2;
+		y = temp.getY() - HEIGHT / 2;
+		if (x < 0)
+		    x = 0;
+		else if (x + WIDTH > lvl.getWidth())
+		    x = lvl.getWidth() - WIDTH;
+		if (y < 0)
+		    y = 0;
+		else if (y + HEIGHT > lvl.getHeight())
+		    y = lvl.getHeight() - HEIGHT;
+	    }
+	    array[0] = x;
+	    array[1] = y;
 	}
-	array[0] = x;
-	array[1] = y;
     }
 
     public static int clamp(int var, int min, int max) {

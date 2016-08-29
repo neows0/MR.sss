@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public class Handler {
     LinkedList<GameObject> objects = new LinkedList<GameObject>();
 
-    public static GameObject player;
+    public static Player player;
     
     public void tick(){
 	
@@ -24,7 +24,7 @@ public class Handler {
     }
 
     public void render(Graphics g){
-	player = findByID(ID.Player);
+	player = (Player) findByID(ID.Player);
 	for(int i = 0; i < objects.size(); i++){
 	    objects.get(i).render(g);
 	}

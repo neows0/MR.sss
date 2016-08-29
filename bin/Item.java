@@ -13,12 +13,12 @@ public abstract class Item extends GameObject{
     protected int relativeY;
     //change player to something like living (have to create a living first)
     protected Player owner;
-    public Item(ITMID itId, Handler handler, Player owner){ 
-	this(-1, -1, itId, handler, false);
+    public Item(ITMID itId, Player owner){ 
+	this(-1, -1, itId, false);
 	this.owner = owner;
     }
-    public Item(int x, int y, ITMID itId, Handler handler, boolean onGround){
-	super(x, y, ID.Item, handler);
+    public Item(int x, int y, ITMID itId, boolean onGround){
+	super(x, y, ID.Item);
 	this.onGround = onGround;
 	this.itId = itId;
     }
@@ -32,9 +32,16 @@ public abstract class Item extends GameObject{
     }
     
     public void equip(){
-	if (owner != null){
+	if (owner != null && !isEquipped()){
 	    equipped = true;
 	    this.setDir(owner.getDir());
+	}
+    }
+
+    public void unequip(){
+	if (owner != null && isEquipped()){
+	    equipped = false;
+	    this.setDir(new Direction());
 	}
     }
     

@@ -32,10 +32,6 @@ public class MouseInput extends MouseAdapter implements MouseWheelListener{
 	//210 150 200 64
     }
 
-    public void mouseWheelMoved(MouseWheelEvent e){
-	System.out.println("mouse moved");
-    }
-
     public void mouseReleased(MouseEvent e){
 	xf = e.getX();
 	yf = e.getY();

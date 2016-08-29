@@ -14,8 +14,8 @@ public class Trail extends GameObject{
     private float alpha = 1;
     private Color color;
     
-    public Trail(int x, int y, ID id, Handler handler, Color color) {
-	super(x, y, id, handler);
+    public Trail(int x, int y, ID id, Color color) {
+	super(x, y, id);
 	this.color = color;
     }
 

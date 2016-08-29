@@ -7,10 +7,10 @@ import java.awt.image.BufferedImage;
 
 public class Tree extends GameObject {
     
-    public Tree(int x, int y, ID id, Handler handler) {
-	super(x, y, id, handler);
+    public Tree(int x, int y, ID id) {
+	super(x, y, id);
 	img = null;
-	img = Game.images.imageList.get(7);
+	img = Game.images.getImgs().get(7);
 	if (img != null){
 	    HEIGHT = img.getHeight();
 	    WIDTH = img.getWidth();

@@ -11,12 +11,13 @@ public class Player extends GameObject {
 
     private int jumpCooldown = 0;
     
-    public Player(int x, int y, ID id, Handler handler) {
-	super(x, y, id, handler);
+    public Player(int x, int y, ID id) {
+	super(x, y, id);
 	//inAir = 0;
 	img = null;
 	//img = Game.images.imageList.get(20);
 	//shadow = Game.images.imageList.get(18);
+	imgFolder = Game.images.getDirLoader("player");
 	imgs = Game.images.getDir("player");
 	if (imgs == null)
 	    System.out.println("Error");
@@ -24,10 +25,13 @@ public class Player extends GameObject {
 	WIDTH = imgs.get(4).getWidth();
 
 	inv = new Inventory();
-	inv.addItem(new Bandana(handler, this));
-	inv.equipItem(0);
+	inv.addItem(new Bandana(this));
+	//inv.equipItem(0);
+	inv.addItem(new Sword(this));
 	
     }
+
+    public Inventory getInv() { return inv; }
 
     public Rectangle getBounds(){
 	return new Rectangle(x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
@@ -95,8 +99,20 @@ public class Player extends GameObject {
 	}
 
 	if (Game.mouse.actionTaken == false){
-	    dX = ((Game.mouse.getXf() - Game.mouse.getXi()) * 100) / Game.WIDTH;
-	    dY = ((Game.mouse.getYf() - Game.mouse.getYi()) * 100) / Game.HEIGHT;
+	//dX = ((Game.mouse.getXf() - Game.mouse.getXi()) * 100) / Game.WIDTH;
+	//dY = ((Game.mouse.getYf() - Game.mouse.getYi()) * 100) / Game.HEIGHT;
+	    Game.toolBar.input(Game.mouse);/*
+	    int tX = Game.mouse.getXi();
+	    int tY = Game.mouse.getYi();
+	    Item temp = inv.getItem(tX, tY);
+	    if (temp != null){
+		if (!temp.isEquipped()){
+		    temp.equip();
+		}
+		else{
+		    temp.unequip();
+		}
+		}*/
 	    Game.mouse.actionTaken = true;
 	}
 
@@ -104,6 +120,8 @@ public class Player extends GameObject {
 	    jumpCooldown--;
 	}
     }
+
+    
 
     private void changeDirection(){
 	if (dY > 0){
@@ -148,9 +166,9 @@ public class Player extends GameObject {
 	    dZ = 0;
 	}
 
-	x = Game.clamp(x, WIDTH / 2, Game.LVLWIDTH - WIDTH / 2);
-	y = Game.clamp(y, HEIGHT / 2, Game.LVLHEIGHT - HEIGHT);
-	collision();
+	x = Game.clamp(x, WIDTH / 2, Game.lvl.getWidth() - WIDTH / 2);
+	y = Game.clamp(y, HEIGHT / 2, Game.lvl.getHeight() - HEIGHT);
+	collision(Game.lvl.getHandler());
 	changeDirection();
     }
 
@@ -158,8 +176,8 @@ public class Player extends GameObject {
 	int tempX = Game.WIDTH / 2;
 	if (x - Game.WIDTH / 2 < 0)
 	    tempX = x;
-	else if (x + Game.WIDTH / 2 > Game.LVLWIDTH )
-	    tempX = x - (Game.LVLWIDTH - Game.WIDTH);
+	else if (x + Game.WIDTH / 2 > Game.lvl.getWidth() )
+	    tempX = x - (Game.lvl.getWidth() - Game.WIDTH);
 	return tempX;
     }
     
@@ -167,8 +185,8 @@ public class Player extends GameObject {
 	int tempY = Game.HEIGHT / 2;
 	if (y < Game.HEIGHT / 2)
 	    tempY = y;
-	else if (y > Game.LVLHEIGHT - Game.HEIGHT / 2)
-	    tempY = y - (Game.LVLHEIGHT - Game.HEIGHT);
+	else if (y > Game.lvl.getHeight() - Game.HEIGHT / 2)
+	    tempY = y - (Game.lvl.getHeight() - Game.HEIGHT);
 	return tempY;
     }
     
@@ -212,7 +230,7 @@ public class Player extends GameObject {
 	g.drawImage(temp, plyrToScrnX() - WIDTH / 2,
 		    plyrToScrnY(true) - HEIGHT / 2, plyrToScrnX() + WIDTH / 2,
 		    plyrToScrnY() + HEIGHT / 2 - z, 0, 0, WIDTH, HEIGHT, null);
-	inv.render(g);
+	//inv.render(g);
     }
 
 }

@@ -23,10 +23,11 @@ public class Direction{
 	this.left = d.left;
 	this.right = d.right;
     }
-    public void reset(){
+    public Direction reset(){
 	forward = true;
 	backward = false;
 	left = false;
 	right = false;
+	return this;
     }
 }

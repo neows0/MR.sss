@@ -1,0 +1,40 @@
+import java.awt.Graphics;
+import java.util.List;
+import java.awt.image.BufferedImage;
+
+public class Toolbar {
+    private DirLoader imgFolder;
+    private Player thisPlayer;
+    private int toolState;
+    private final static int INV = 0;
+    public Toolbar(Player player){
+	imgFolder = Game.images.getDirLoader("toolbar");
+	thisPlayer = player;
+	toolState = INV;
+    }
+    public void input(MouseInput mI){
+	if (toolState == INV){
+	    int tX = mI.getXi();
+	    int tY = mI.getYi();
+	    Item temp = thisPlayer.getInv().getItem(tX, tY);
+	    if (temp != null){
+		if (!temp.isEquipped()){
+		    temp.equip();
+		}
+		else{
+		    temp.unequip();
+		}
+	    }
+	}
+    }
+    public void tick(){
+	if (toolState == INV) {
+	    thisPlayer.getInv().tick();
+	}
+    }
+    public void render(Graphics g){
+	if (toolState == INV){
+	    thisPlayer.getInv().render(g);
+	}
+    }
+}

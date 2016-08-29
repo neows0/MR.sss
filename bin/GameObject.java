@@ -11,16 +11,17 @@ public abstract class GameObject {
     protected int HEIGHT, WIDTH;
     public BufferedImage img;
     public List<BufferedImage> imgs;
-    Handler handler;
+    public DirLoader imgFolder;
+    //Room lvl;
     protected Direction facing;
 
-    public GameObject(int x, int y, ID id, Handler handler) {
+    public GameObject(int x, int y, ID id) {
 	facing = new Direction();
 	this.x = x;
 	this.y = y;
 	z = 0;
 	this.id = id;
-	this.handler = handler;
+	//this.lvl = lvl;
     }
 
     public abstract void tick();
@@ -28,7 +29,7 @@ public abstract class GameObject {
     public abstract Rectangle getBounds();
     public abstract void hit(GameObject collided);
 
-    protected void collision(){
+    public void collision(Handler handler){
 	for(int i = 0; i < handler.objects.size(); i++){
 	    GameObject temp = handler.objects.get(i);
 	    if (temp != this){
@@ -37,6 +38,17 @@ public abstract class GameObject {
 	    }
 	}
     }
+    /*
+    protected void collision(){
+	Handler handler = lvl.getHandler();
+	for(int i = 0; i < handler.objects.size(); i++){
+	    GameObject temp = handler.objects.get(i);
+	    if (temp != this){
+		if(getBounds().intersects(temp.getBounds()))
+		    hit(temp);
+	    }
+	}
+	}*/
 
     /* Setters and getters */
     public void setX(int x) {
