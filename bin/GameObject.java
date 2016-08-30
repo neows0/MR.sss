@@ -26,17 +26,33 @@ public abstract class GameObject {
 
     public abstract void tick();
     public abstract void render(Graphics g);
-    public abstract Rectangle getBounds();
+    public Rectangle getBounds() { return getBounds(false); }
+    public abstract Rectangle getBounds(boolean includeZ);
     public abstract void hit(GameObject collided);
 
     public void collision(Handler handler){
+	collision(handler, false);
+    }
+    public void collision(Handler handler, boolean iZ){
 	for(int i = 0; i < handler.objects.size(); i++){
 	    GameObject temp = handler.objects.get(i);
 	    if (temp != this){
-		if(getBounds().intersects(temp.getBounds()))
+		if(getBounds(iZ).intersects(temp.getBounds(iZ)))
 		    hit(temp);
 	    }
 	}
+    }
+    public static GameObject collision(Handler handler, int X, int Y){
+	return collision(handler, X, Y, false);
+    }
+    public static GameObject collision(Handler handler,
+				       int X, int Y, boolean iZ){
+	for(int i = 0; i < handler.objects.size(); i++){
+	    GameObject temp = handler.objects.get(i);
+	    if(temp.getBounds(iZ).contains(X, Y))
+		return temp;
+	}
+	return null;
     }
     /*
     protected void collision(){

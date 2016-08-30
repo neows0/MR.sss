@@ -60,6 +60,7 @@ public class Room {
     }
     public void load() {
     }
+    public Player getPlayer() { return player; }
     public int getWidth() { return WIDTH; }
     public int getHeight() { return HEIGHT; }
     public Handler getHandler() { return handler; }

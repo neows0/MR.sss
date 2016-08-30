@@ -3,10 +3,12 @@ import java.util.List;
 import java.awt.image.BufferedImage;
 
 public class Toolbar {
+    
     private DirLoader imgFolder;
     private Player thisPlayer;
     private int toolState;
     private final static int INV = 0;
+    private final static int SKILLS = 1;
     public Toolbar(Player player){
 	imgFolder = Game.images.getDirLoader("toolbar");
 	thisPlayer = player;
@@ -26,15 +28,21 @@ public class Toolbar {
 		}
 	    }
 	}
+	else if (toolState == SKILLS) {
+	}
     }
     public void tick(){
 	if (toolState == INV) {
 	    thisPlayer.getInv().tick();
 	}
+	else if (toolState == SKILLS) {
+	}
     }
     public void render(Graphics g){
 	if (toolState == INV){
 	    thisPlayer.getInv().render(g);
+	}
+	else if (toolState == SKILLS) {
 	}
     }
 }

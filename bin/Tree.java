@@ -20,9 +20,14 @@ public class Tree extends GameObject {
 	    WIDTH = 100;
 	}
     }
-
-    public Rectangle getBounds(){
-	return new Rectangle(x - WIDTH / 2, y, WIDTH, HEIGHT / 2);
+    
+    public Rectangle getBounds(boolean includeZ) {
+	if (includeZ){
+	    return new Rectangle(x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
+	}
+	else {
+	    return new Rectangle(x - WIDTH / 2, y, WIDTH, HEIGHT / 2);
+	}
     }
 
     public void hit(GameObject collided){

@@ -5,14 +5,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseMotionListener;
 
-public class MouseInput extends MouseAdapter implements MouseWheelListener{
+public class MouseInput extends MouseAdapter implements MouseMotionListener{
 
     Game game;
     private volatile int xi = 0;
     private volatile int yi = 0;
     private volatile int xf = 0;
     private volatile int yf = 0;
+    private volatile int x = 0;
+    private volatile int y = 0;
     private boolean leftClick = false;
     public boolean actionTaken = true;
     
@@ -39,12 +42,22 @@ public class MouseInput extends MouseAdapter implements MouseWheelListener{
 	leftClick = false;
 	actionTaken = false;
     }
+    public void mouseDragged(MouseEvent e){
+	x = e.getX();
+	y = e.getY();
+    }
+    public void mouseMoved(MouseEvent e){
+	x = e.getX();
+	y = e.getY();
+    }
 
     public boolean getLeftClick(){ return leftClick;}
     public int getXi(){ return xi; }
     public int getYi(){ return yi; }
     public int getXf(){ return xf; }
     public int getYf(){ return yf; }
+    public int getX() { return x; }
+    public int getY() { return y; }
 
     private boolean mouseOver(int mx, int my, int x, int y,
 			      int width, int height){

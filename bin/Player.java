@@ -10,7 +10,10 @@ public class Player extends GameObject {
     private Inventory inv;
 
     private int jumpCooldown = 0;
-    
+    private int IMGHEIGHT;
+    private int IMGWIDTH;
+    private int ma = 0;
+    private int buffer = 0;
     public Player(int x, int y, ID id) {
 	super(x, y, id);
 	//inAir = 0;
@@ -21,6 +24,8 @@ public class Player extends GameObject {
 	imgs = Game.images.getDir("player");
 	if (imgs == null)
 	    System.out.println("Error");
+	IMGHEIGHT = imgs.get(4).getHeight();
+	IMGWIDTH = imgs.get(4).getWidth();
 	HEIGHT = imgs.get(4).getHeight();
 	WIDTH = imgs.get(4).getWidth();
 
@@ -33,8 +38,11 @@ public class Player extends GameObject {
 
     public Inventory getInv() { return inv; }
 
-    public Rectangle getBounds(){
-	return new Rectangle(x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
+    public Rectangle getBounds(boolean includeZ){
+	if (includeZ)
+	    return new Rectangle(x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
+	else
+	    return new Rectangle(x - WIDTH / 2, y, WIDTH, HEIGHT / 2);
     }
 
     public void hit(GameObject collided){ 
@@ -220,16 +228,44 @@ public class Player extends GameObject {
 	    temp = imgs.get(3);
 	else if (facing.getRight())
 	    temp = imgs.get(2);
-	else if (facing.getForward())
-	    temp = imgs.get(0);
+	else if (facing.getForward()){
+	    if (dY == 0){
+		temp = imgs.get(0);
+	    }
+	    else {
+		int i = 0;
+		// % 8 == 0:0 1:9 2:10 3:9 4:0 
+		// % 8 == 5:11 6:12 7:11
+		if (ma % 8 == 0)
+		    i = 0;
+		else if (ma % 8 == 1)
+		    i = 9;
+		else if (ma % 8 == 2)
+		    i = 10;
+		else if (ma % 8 == 3)
+		    i = 9;
+		else if (ma % 8 == 4)
+		    i = 0;
+		else if (ma % 8 == 5)
+		    i = 11;
+		else if (ma % 8 == 6)
+		    i = 12;
+		else
+		    i = 11;
+		temp = imgs.get(i);
+		if (buffer % 20 / dY == 0)
+		    ma++;
+		buffer++;
+
+	    }
+	}
 	else if (facing.getBackward())
 	    temp = imgs.get(1);
 	else
 	    System.out.println("no direction");
-	
 	g.drawImage(temp, plyrToScrnX() - WIDTH / 2,
 		    plyrToScrnY(true) - HEIGHT / 2, plyrToScrnX() + WIDTH / 2,
-		    plyrToScrnY() + HEIGHT / 2 - z, 0, 0, WIDTH, HEIGHT, null);
+		    plyrToScrnY() + HEIGHT / 2 - z, 0, 0, IMGWIDTH, IMGHEIGHT, null);
 	//inv.render(g);
     }
 

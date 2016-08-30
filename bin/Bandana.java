@@ -62,7 +62,7 @@ public class Bandana extends Item {
 			0, 0, WIDTH, HEIGHT, null);
 	}
     }
-    public Rectangle getBounds(){
+    public Rectangle getBounds(boolean includeZ){
 	return new Rectangle(x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
     }
     public void hit(GameObject collided){

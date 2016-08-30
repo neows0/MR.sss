@@ -60,7 +60,8 @@ public class Game extends Canvas implements Runnable{
 	
 	this.addKeyListener(input);
 	this.addMouseListener(mouse);
-	this.addMouseWheelListener(mouse);
+	//this.addMouseWheelListener(mouse);
+	this.addMouseMotionListener(mouse);
 	
 	new Window(SCRNWIDTH, SCRNHEIGHT, "mrSSS", this);
 	
