@@ -10,8 +10,7 @@ public class Player extends GameObject {
     private Inventory inv;
 
     private int jumpCooldown = 0;
-    private int IMGHEIGHT;
-    private int IMGWIDTH;
+    
     private int ma = 0;
     private int buffer = 0;
     public Player(int x, int y, ID id) {
@@ -109,7 +108,8 @@ public class Player extends GameObject {
 	if (Game.mouse.actionTaken == false){
 	//dX = ((Game.mouse.getXf() - Game.mouse.getXi()) * 100) / Game.WIDTH;
 	//dY = ((Game.mouse.getYf() - Game.mouse.getYi()) * 100) / Game.HEIGHT;
-	    Game.toolBar.input(Game.mouse);/*
+	    Game.toolBar.input(Game.mouse);
+	    /*
 	    int tX = Game.mouse.getXi();
 	    int tY = Game.mouse.getYi();
 	    Item temp = inv.getItem(tX, tY);
@@ -266,6 +266,9 @@ public class Player extends GameObject {
 	g.drawImage(temp, plyrToScrnX() - WIDTH / 2,
 		    plyrToScrnY(true) - HEIGHT / 2, plyrToScrnX() + WIDTH / 2,
 		    plyrToScrnY() + HEIGHT / 2 - z, 0, 0, IMGWIDTH, IMGHEIGHT, null);
+	//g.copyArea(plyrToScrnX() - WIDTH / 2 ,plyrToScrnY() - HEIGHT / 2,
+	//	   WIDTH, HEIGHT, 100, 0);
+	//new TextBox(g, plyrToScrnX(), plyrToScrnY(), "This is my story of how I created a text wraping ablility out of nothing.\nSuck it java!!!", 100);
 	//inv.render(g);
     }
 

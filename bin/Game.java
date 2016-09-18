@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.Toolkit;
+import java.awt.Dimension;
 
 /*
  * BufferedImage.getSubimage(int x, int y, int w, int h);
@@ -14,9 +16,14 @@ public class Game extends Canvas implements Runnable{
 
     private static final long serialVersionUID = 1550691097823471818L;
 
-    public static final int SCRNWIDTH = 1000,
-	SCRNHEIGHT = SCRNWIDTH / 12 * 9;
-     public static final int WIDTH = 750,
+    private static final Dimension screenSize =
+	Toolkit.getDefaultToolkit().getScreenSize();
+    
+    /*public static final int SCRNWIDTH = 1000,
+      SCRNHEIGHT = SCRNWIDTH / 12 * 9;*/
+    public static final int SCRNWIDTH = (int)screenSize.getWidth(),
+      SCRNHEIGHT = (int)screenSize.getHeight() - 25;
+     public static final int WIDTH = SCRNWIDTH - 250,
 	HEIGHT = SCRNHEIGHT;
 
     //public static LoadJpg images = LoadJpg.getInstance();

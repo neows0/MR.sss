@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 public class Inventory {
     private List<Item> items;
     private int size;
-    private static final int invY = 370;
+    private static final int invY = 450;
     private List<BufferedImage> imgs;
     public Inventory(){
 	items = new ArrayList<Item>();

@@ -9,6 +9,8 @@ public abstract class GameObject {
     protected ID id;
     protected int dX, dY, dZ;
     protected int HEIGHT, WIDTH;
+    protected int IMGHEIGHT;
+    protected int IMGWIDTH;
     public BufferedImage img;
     public List<BufferedImage> imgs;
     public DirLoader imgFolder;
