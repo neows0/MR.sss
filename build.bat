@@ -1,7 +1,13 @@
 @echo off
 rem A simple batch program that locates every source file
 
-rem Get all of the sources
+rem If a parameter was not put in, then call make to put it in for us
+if [%1]==[] (
+	make
+	exit /b 0
+)
+
+rem Get all of the sources in a text file
 dir /b /s *.java > sources.txt 
 
 setlocal enableextensions disabledelayedexpansion
@@ -19,7 +25,14 @@ for /f "delims=" %%i in ('type "%textFile%" ^& break ^> "%textFile%" ') do (
 )
 
 rem Compile the java sources
-javac @sources.txt -d bin
+echo javac @sources.txt -d %1%
+javac @sources.txt -d %1%
 
-rem Remove the sources file
+rem Store the exit code to return it later
+set exitcode=%errorlevel%
+
+rem Delete the sources file
 erase sources.txt
+
+rem Return the stored exit code
+exit /b %exitcode%

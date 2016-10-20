@@ -1,17 +1,12 @@
 # The java directories
-SRC = "src/"
-BIN = "bin/"
+SRC = src
+BIN = bin
 
-# The java compiler, virtual machine, and jar maker
-JAVAC = "javac"
-JAVA = "java"
-JAR = "jar"
+mrSSS.jar: $(BIN) classes
+	cd $(BIN); jar cvfe ../mrSSS.jar Game .
 
-mrSSS.jar: bin classes
-	cd bin; jar cvfe ../mrSSS.jar Game .
-
-classes: bin src/*.java
-	build
+classes: $(BIN) $(SRC)/*.java
+	build $(BIN)
 
 bin:
 # Windows
@@ -25,10 +20,14 @@ endif
 clean:
 # Windows
 ifeq ($(OS), Windows_NT)
+	cmd /E:ON /C erase mrSSS.jar
+	cmd /E:ON /C rmdir /s /q $(BIN)
 	cmd /E:ON /C erase sources.txt
-	cmd /E:ON /C rmdir /s /q bin
 else
 # Linux
 	rm  sources.txt
-	rm -rf bin
+	rm -rf $(BIN)
 endif
+
+run:
+	run

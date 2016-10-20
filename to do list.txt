@@ -10,7 +10,7 @@ game
 -take out the window and put that into the player class
 
 Human/items
--cause rendering of equipted items to happen before or after human depending on where the item is
+-cause rendering of equipped items to happen before or after human depending on where the item is
 
 should each player be on a different thread?
 research how listeners work
