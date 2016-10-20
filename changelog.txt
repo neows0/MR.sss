@@ -1,0 +1,5 @@
+Changelog:
+- Moved .java files to src directory
+- Moved makefile to top directory
+- Added bin directory, temporary emacs files, and temporary makefiles to .gitignore
+- Reworked the makefile

@@ -1,6 +1,17 @@
+# Compiled Files #
 *.class
+bin/
 
-# Mobile Tools for Java (J2ME)
+# Emacs Backup Files #
+*~
+
+# Java sources file #
+sources.txt
+
+# Thumbnail files that windows generates #
+Thumbs.db
+
+# Mobile Tools for Java (J2ME) #
 .mtj.tmp/
 
 # Package Files #

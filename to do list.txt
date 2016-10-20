@@ -1,0 +1,16 @@
+Alan, this is just a note to myself on what I need to do
+
+break player class into two parts, human class and player class
+
+room 
+-make it be able to be created without a player
+-change the room render so that it takes a player and renders around that player specific player
+
+game
+-take out the window and put that into the player class
+
+Human/items
+-cause rendering of equipted items to happen before or after human depending on where the item is
+
+should each player be on a different thread?
+research how listeners work
