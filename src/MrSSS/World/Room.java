@@ -1,6 +1,14 @@
+package MrSSS.World;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+
+import MrSSS.Object.Player;
+import MrSSS.Object.Tree;
+import MrSSS.Object.GameObject;
+import MrSSS.Object.ObjectID;
+import MrSSS.Game;
 
 public class Room {
     private int WIDTH;
@@ -27,7 +35,7 @@ public class Room {
 	    int j = r.nextInt(1000);
 	    int k = r.nextInt(1400);
 	    if (!player.getBounds().intersects(j - 100, k - 100, 200, 200))
-		handler.addObject(new Tree(j, k, ID.Obstacle));
+		handler.addObject(new Tree(j, k, ObjectID.Obstacle));
 	    else {
 		i--;
 	    }
@@ -38,7 +46,7 @@ public class Room {
 	handler.tick();
     }
     public void render(Graphics g) {
-	GameObject temp = handler.findByID(ID.Player);
+	GameObject temp = handler.findByID(ObjectID.Player);
 	    if (temp == null){
 		g.drawImage(backGround, 0, 0, Game.WIDTH, Game.HEIGHT,
 			    0, 0, Game.WIDTH, Game.HEIGHT, null);

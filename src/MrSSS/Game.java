@@ -1,3 +1,5 @@
+package MrSSS;
+
 import java.awt.Canvas;
 import java.awt.image.BufferStrategy;
 import java.awt.Graphics;
@@ -7,6 +9,18 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
 import java.awt.Dimension;
+
+import MrSSS.IO.Loader.DirLoader;
+import MrSSS.IO.KeyInput;
+import MrSSS.IO.MouseInput;
+import MrSSS.IO.GUI.Toolbar;
+import MrSSS.IO.GUI.Menu;
+import MrSSS.IO.GUI.Window;
+import MrSSS.Object.Player;
+import MrSSS.Object.ObjectID;
+import MrSSS.Object.GameObject;
+import MrSSS.World.Room;
+
 
 /*
  * BufferedImage.getSubimage(int x, int y, int w, int h);
@@ -54,7 +68,6 @@ public class Game extends Canvas implements Runnable{
 
     public STATE gameState = STATE.Game;
     
-    
     public Game(){
 	images = new DirLoader("../images");
 	if (images.getDir("background") == null){
@@ -75,7 +88,7 @@ public class Game extends Canvas implements Runnable{
 	r = new Random();
 
 	if (gameState == STATE.Game){
-	    player = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player);
+	    player = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ObjectID.Player);
 	    lvl = new Room(player);
 	    toolBar = new Toolbar(player);
 	}
@@ -83,63 +96,67 @@ public class Game extends Canvas implements Runnable{
     }
     
     public synchronized void start(){
-	thread = new Thread(this);
-	thread.start();
-	running = true;
+		thread = new Thread(this);
+		thread.start();
+		running = true;
     }
 
     public synchronized void stop(){
-	try {
-	    thread.join();
-	    running = false;
-	}catch(Exception e){
-	    e.printStackTrace();
-	}
+		try {
+			thread.join();
+			running = false;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
     }
 
     public void run(){
-	this.requestFocus();
-	long lastTime = System.nanoTime();
-	double amountOfTicks = 60.0;
-	double ns = 1000000000 / amountOfTicks;
-	double delta = 0;
-	long timer = System.currentTimeMillis();
-	int frames = 0;
-	while(running){
-	    long now = System.nanoTime();
-	    delta += (now - lastTime) / ns;
-	    lastTime = now;
-	    while(delta >= 1){
-		tick();
-		delta--;
-	    }
-	    if(running)
-		render();
-	    frames++;
-	    
-	    if(System.currentTimeMillis() - timer > 1000){
-		timer += 1000;
-		//System.out.println("FPS: " + frames);
-		frames = 0;
-	    }
-	}
-	stop();
+		this.requestFocus();
+		long lastTime = System.nanoTime();
+		double amountOfTicks = 60.0;
+		double ns = 1000000000 / amountOfTicks;
+		double delta = 0;
+		long timer = System.currentTimeMillis();
+		int frames = 0;
+		while(running){
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+
+			while(delta >= 1){
+			tick();
+			delta--;
+			}
+
+			if(running)
+			render();
+			frames++;
+			
+			if(System.currentTimeMillis() - timer > 1000){
+			timer += 1000;
+
+			//System.out.println("FPS: " + frames);
+			frames = 0;
+			}
+		}
+		stop();
     }
 
     private void tick(){
-	if (gameState == STATE.Game){
-	    if (lvl != null){
-		lvl.tick();
-	    }
-	    //handler.tick();
-	    if (toolBar != null){
-		toolBar.tick();
-	    }
-	}
-	else if (gameState == STATE.Menu){
-	    menu.tick();
-	}
-	//hud.tick();
+		if (gameState == STATE.Game){
+			if (lvl != null){
+			lvl.tick();
+			}
+
+			//handler.tick();
+			if (toolBar != null){
+			toolBar.tick();
+			}
+		}
+		else if (gameState == STATE.Menu){
+			menu.tick();
+		}
+		//hud.tick();
     }
 
    

@@ -3,9 +3,9 @@ SRC = src
 BIN = bin
 
 mrSSS.jar: $(BIN) classes
-	cd $(BIN); jar cvfe ../mrSSS.jar Game .
+	cd $(BIN); jar cvfm ../mrSSS.jar ../$(SRC)/MANIFEST.MF . ../images
 
-classes: $(BIN) $(SRC)/*.java
+classes: $(BIN)
 	build $(BIN)
 
 bin:

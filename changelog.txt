@@ -1,5 +1,15 @@
-Changelog:
+Upcoming...
+- Add Loader interface and JarLoader class (For loading images from jar)
+- Make DirLoader implement Loader interface
+- Make jar standalone (The whole point of including the images in the jar)
+- Test and fix compilation on Linux
+
+v0.1:
 - Moved .java files to src directory
-- Moved makefile to top directory
-- Added bin directory, temporary emacs files, and temporary makefiles to .gitignore
-- Reworked the makefile
+- Moved makefile and mrSSS.jar to top directory
+- Added bin directory
+- Added batch and bash files to help make with compiling on multiple platforms
+- Reworked the makefile (Now runs/compiles differently depending on os)
+- Rearranged code to different packages
+- Improved code readability
+- Images are now included in the jar

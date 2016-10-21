@@ -1,7 +1,6 @@
+package MrSSS.Object;
 
-
-public enum ID {
-
+public enum ObjectID {
     Player(),
     BasicEnemy(),
     Enemy(),

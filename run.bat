@@ -14,5 +14,6 @@ if not exist mrSSS.jar (
 
 rem Run the client
 @echo off
-java -jar mrSSS.jar
+cd bin
+java -jar ../mrSSS.jar
 exit /b %errorlevel%

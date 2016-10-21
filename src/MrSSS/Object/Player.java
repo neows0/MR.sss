@@ -1,9 +1,16 @@
+package MrSSS.Object;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+
+import MrSSS.Game;
+import MrSSS.Item.Inventory;
+import MrSSS.Item.Wearable.Bandana;
+import MrSSS.Item.Usable.Sword;
 
 public class Player extends GameObject {
 
@@ -13,7 +20,7 @@ public class Player extends GameObject {
     
     private int ma = 0;
     private int buffer = 0;
-    public Player(int x, int y, ID id) {
+    public Player(int x, int y, ObjectID id) {
 	super(x, y, id);
 	//inAir = 0;
 	img = null;
@@ -45,7 +52,7 @@ public class Player extends GameObject {
     }
 
     public void hit(GameObject collided){ 
-        if (collided.getId() == ID.Obstacle){
+        if (collided.getId() == ObjectID.Obstacle){
 	    x -= dX;
 	    if (collided.getBounds().intersects(this.getBounds())){
 		x += dX;

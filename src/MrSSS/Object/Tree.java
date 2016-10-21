@@ -1,3 +1,5 @@
+package MrSSS.Object;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -5,9 +7,11 @@ import java.awt.Rectangle;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
+import MrSSS.Game;
+
 public class Tree extends GameObject {
     
-    public Tree(int x, int y, ID id) {
+    public Tree(int x, int y, ObjectID id) {
 	super(x, y, id);
 	img = null;
 	img = Game.images.getImgs().get(7);
