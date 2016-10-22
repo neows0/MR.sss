@@ -1,3 +1,4 @@
 public enum ITMID {
-    Bandana();
+    Bandana(),
+    Sword();
 }
