@@ -2,6 +2,7 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.FontMetrics;
 
+
 public class TextBox{
     public TextBox(Graphics g, int x, int y, String str, int WIDTH) {
 	Color temp = g.getColor();
