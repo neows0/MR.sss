@@ -28,7 +28,7 @@ public class Player extends GameObject {
 	HEIGHT = imgs.get(4).getHeight();
 	WIDTH = imgs.get(4).getWidth();
 
-	inv = new Inventory();
+	inv = new Inventory((GameObject)this);
 	inv.addItem(new Bandana(this));
 	//inv.equipItem(0);
 	inv.addItem(new Sword(this));

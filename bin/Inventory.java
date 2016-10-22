@@ -8,16 +8,21 @@ public class Inventory {
     private int size;
     private static final int invY = 450;
     private List<BufferedImage> imgs;
-    public Inventory(){
+    private GameObject owner;
+    
+    public Inventory(GameObject owner){
 	items = new ArrayList<Item>();
 	imgs = Game.images.getDir("toolbar");
+	this.owner = owner;
     }
     public void addItem(Item item) {items.add(item);}
+    
     public void equipItem(int i) {
 	if (items.size() > i){
 	    items.get(i).equip();
 	}
     }
+    
     public Item getItem(int tX, int tY){
 	int i = Game.WIDTH + 27;
 	
@@ -35,8 +40,10 @@ public class Inventory {
 	}
 	return null;
     }
+    
     public void tick() {
     }
+    
     public void render(Graphics g) {
 	//System.out.println(Integer.toString(imgs.size()));
 	int H = imgs.get(0).getHeight();

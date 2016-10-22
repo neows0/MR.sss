@@ -37,7 +37,7 @@ public class Game extends Canvas implements Runnable{
     private Thread thread;
     private boolean running = false;
     public static Toolbar toolBar;
-    public static Player player;
+    public static Player player; 
 
     //private BufferedImage backGround;
 
