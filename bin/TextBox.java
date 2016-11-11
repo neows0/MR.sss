@@ -4,14 +4,28 @@ import java.awt.FontMetrics;
 
 
 public class TextBox{
-    public TextBox(Graphics g, int x, int y, String str, int WIDTH) {
-	Color temp = g.getColor();
-	
-	g.setColor(new Color(0, 0, 0, 200));
-	g.fillRect(x, y, WIDTH, 50);
-	g.setColor(Color.BLUE);
+    protected int x, y, WIDTH, HEIGHT;
+    protected MyString str;
+    protected Color boxColor;
+    protected Color textColor;
+    public TextBox(int x, int y, String str, int WIDTH, int HEIGHT) {
+	this.x = x;
+	this.y = y;
+	this.str = new MyString(str);
+	//this.str.data = str;
+	this.WIDTH = WIDTH;
+	this.HEIGHT = HEIGHT;
+	boxColor = new Color(0, 0, 0, 200);
+	textColor = Color.BLUE;
+    }
+
+    public void render(Graphics g) {
+	Color temp = g.getColor();	
+	g.setColor(boxColor);
+	g.fillRect(x, y, WIDTH, HEIGHT);
+	g.setColor(textColor);
 	//printNewLine(g, x, y + 10, str);
-	wrapText(g, x, y + 11, str, WIDTH);
+	wrapText(g, x, y + 11, str.data, WIDTH);
 	//g.drawString(str, x, y);
 	g.setColor(temp);
     }
@@ -71,5 +85,29 @@ public class TextBox{
 		}
 	    }
 	}
+    }
+    public void setBoxColor(Color myColor) {
+	this.boxColor = myColor;
+    }
+    public Color getBoxColor() {
+	return boxColor;
+    }
+    public void setTextColor(Color myColor) {
+	this.textColor = myColor;
+    }
+    public Color getTextColor() {
+	return textColor;
+    }
+    public void setText(MyString str) {
+	this.str = str;
+    }
+    public void setText(String str) {
+	this.str.data = str;
+    }
+    public MyString getText() {
+	return str;
+    }
+    public String getString() {
+	return str.data;
     }
 }

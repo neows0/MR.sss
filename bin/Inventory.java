@@ -2,6 +2,7 @@ import java.awt.Graphics;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
+import java.awt.Color;
 
 public class Inventory {
     private List<Item> items;
@@ -55,6 +56,11 @@ public class Inventory {
 		    0, 0, W, H, null);
 	H = imgs.get(1).getHeight();
 	W = imgs.get(1).getWidth();
+	/*Color c = g.getColor();
+	Color n = new Color(127, 51, 0); //61, 24, 0
+	g.setColor(n);
+	g.fillRect(10, 10, 200, 200);
+	g.setColor(c);*/
 	for (int i = 0; i < 9; i++){
 	    for (int j = 0; j < 6; j++){
 		g.drawImage(imgs.get(1), Game.WIDTH + 27 + j * 32,

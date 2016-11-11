@@ -1,58 +1,111 @@
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.lang.Character;
+//import java.util.Observer;
 
-public class KeyInput extends KeyAdapter{
+public class KeyInput extends KeyAdapter {
 
-    private boolean WPressed;
-    private boolean APressed;
-    private boolean SPressed;
-    private boolean DPressed;
-    private boolean IPressed;
     private boolean Space;
+    private boolean Enter;
+
+    private ArrayList<Boolean> pressed;
+
+    private ArrayList<MyString> inputs;
     
+    private ArrayList<KeyWatcher> investigators;
+    private boolean trackInput = true;
+
+    private String input;
 
     public KeyInput(){
-	WPressed = false;
-	APressed = false;
-	SPressed = false;
-	DPressed = false;
-	IPressed = false;
+
 	Space = false;
+	input = new String("");
+	investigators = new ArrayList<KeyWatcher>();
+	inputs = new ArrayList<MyString>();
+	pressed = new ArrayList<Boolean>(26);
+	for (int i = 0; i < 26; i++)
+	    pressed.add(false);
     }
     
     public void keyPressed(KeyEvent e){
 	int key = e.getKeyCode();
 
-	//System.out.println(key);
-       
-	//System.out.println("found player");
-	if(key == KeyEvent.VK_W) WPressed = true;
-	if(key == KeyEvent.VK_S) SPressed = true;
-	if(key == KeyEvent.VK_A) APressed = true;
-	if(key == KeyEvent.VK_D) DPressed = true;
-	if(key == KeyEvent.VK_I) IPressed = true;
-	if(key == KeyEvent.VK_SPACE) Space = true; 
-
+	if(key == KeyEvent.VK_SPACE) Space = true;
+	if (key >= 65 && key <= 90) 
+	    pressed.set(key - 65, true);
     }
 
     public void keyReleased(KeyEvent e) {
 	int key = e.getKeyCode();
+
+	if (key >= 65 && key <= 90) 
+	    pressed.set(key - 65, false);
+	if (isPrintableChar(e.getKeyChar())){
+	    //input += "" + e.getKeyChar();
+	    for (MyString s : inputs) {
+		s.data += "" + e.getKeyChar();
+	    }
+	}
+	if (key == KeyEvent.VK_BACK_SPACE) {
+	    if (!input.isEmpty())
+		input = input.substring(0,input.length() - 1);
+	}
+	if(key == KeyEvent.VK_SPACE) { Space = false; }
+	if(key == KeyEvent.VK_ENTER) { Enter = false; notifyObservers();}
 	
-	if(key == KeyEvent.VK_W) WPressed = false;
-	if(key == KeyEvent.VK_S) SPressed = false;
-	if(key == KeyEvent.VK_A) APressed = false;
-	if(key == KeyEvent.VK_D) DPressed = false;
-	if(key == KeyEvent.VK_I) IPressed = false;
-	if(key == KeyEvent.VK_SPACE) Space = false;
 	
     }
 
-    public boolean getW(){ return WPressed; }
-    public boolean getA(){ return APressed; }
-    public boolean getS(){ return SPressed; }
-    public boolean getD(){ return DPressed; }
-    public boolean getI(){ return IPressed; }
+    public boolean isPrintableChar( char c ) {
+    Character.UnicodeBlock block = Character.UnicodeBlock.of( c );
+    return (!Character.isISOControl(c)) &&
+            c != KeyEvent.CHAR_UNDEFINED &&
+            block != null &&
+            block != Character.UnicodeBlock.SPECIALS;
+}
+
+    public boolean isPressed(String s) {
+	if (!s.isEmpty()) {
+	    char c = s.charAt(0);
+	    int i = Character.getNumericValue(c) - 10;
+	    //System.out.println(Character.getNumericValue(c - 10));
+	    if (i >= 0 && i < pressed.size())
+		return pressed.get(i);
+	    //return true;
+	}
+	else
+	    return false;
+	return false;
+    }
+    public boolean getW(){ return pressed.get(22); }
+    public boolean getA(){ return pressed.get(0); }
+    public boolean getS(){ return pressed.get(18); }
+    public boolean getD(){ return pressed.get(3); }
+    public boolean getI(){ return pressed.get(8); }
     public boolean getSpace(){ return Space; }
+    //public String getInput(){ return input; }
+    //public void clearInput(){ input = ""; }
+
+    void addObserver(KeyWatcher o) {
+	investigators.add(o);
+    }
+
+    void addInputs(MyString in) {
+	inputs.add(in);
+	//System.out.println(Integer.toString(inputs.size()));
+    }
+    void removeInputs(MyString stopInput) {
+	inputs.remove(stopInput);
+	//System.out.println(Integer.toString(inputs.size()));
+    }
+
+    void notifyObservers() {
+	for (KeyWatcher o : investigators)
+	    o.update(this);
+    }
     
 }
+

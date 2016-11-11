@@ -37,7 +37,10 @@ public class Game extends Canvas implements Runnable{
     private Thread thread;
     private boolean running = false;
     public static Toolbar toolBar;
-    public static Player player; 
+    public static Player player;
+
+    public static boolean broadcasting = false;
+    public static boolean inServer = false;
 
     //private BufferedImage backGround;
 
@@ -76,8 +79,9 @@ public class Game extends Canvas implements Runnable{
 
 	if (gameState == STATE.Game){
 	    player = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player);
-	    lvl = new Room(player);
+	    lvl = new Room(player, "alpah");
 	    toolBar = new Toolbar(player);
+	    //LoadRoom(lvl, "alpah", player);
 	}
 	
     }
@@ -140,6 +144,10 @@ public class Game extends Canvas implements Runnable{
 	    menu.tick();
 	}
 	//hud.tick();
+	if (broadcasting) {
+	    //System.out.println("broadcasting...");
+	}
+	//System.out.println(input.getInput());
     }
 
    

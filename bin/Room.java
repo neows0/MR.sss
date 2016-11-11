@@ -1,16 +1,19 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import java.io.File;
 
 public class Room {
     private int WIDTH;
     private int HEIGHT;
     private BufferedImage backGround;
     private Handler handler;
-    private Player player;
 
-    public Room(Player player) {
-	this.player = player;
+    private String roomName;
+    
+    public Room(Player player, String roomName) {
+	loadRoom(roomName);
+	
 	if (Game.images.getDir("background") == null){
 	    System.out.println("couldn't find background");
 	}
@@ -34,33 +37,40 @@ public class Room {
 	}
 	
     }
+    public void loadRoom(String newRoomName){
+	this.roomName = newRoomName;
+	File folder = new File("../rooms/" + newRoomName + "/");
+	String[] l = folder.list();
+	if (l != null)
+	    System.out.println(l[0]);
+    }
     public void tick() {
 	handler.tick();
     }
     public void render(Graphics g) {
-	GameObject temp = handler.findByID(ID.Player);
-	    if (temp == null){
-		g.drawImage(backGround, 0, 0, Game.WIDTH, Game.HEIGHT,
-			    0, 0, Game.WIDTH, Game.HEIGHT, null);
-		System.out.println("player in null");
-	    }
-	    else {
+	//GameObject temp = handler.findByID(ID.Player);
+	Player temp = Game.player;
+	if (temp == null){
+	    g.drawImage(backGround, 0, 0, Game.WIDTH, Game.HEIGHT,
+			0, 0, Game.WIDTH, Game.HEIGHT, null);
+	    System.out.println("player in null");
+	}
+	else {
 	    
-		int [] array = { 0, 0 };
-		Game.screenLoc(array);
+	    int [] array = { 0, 0 };
+	    Game.screenLoc(array);
 	    
-		int x = array[0];
-		int y = array[1];
+	    int x = array[0];
+	    int y = array[1];
 		
-		g.drawImage(backGround, 0, 0, Game.WIDTH, Game.HEIGHT,
-			    x, y, Game.WIDTH + x, Game.HEIGHT + y, null);
-	    }
+	    g.drawImage(backGround, 0, 0, Game.WIDTH, Game.HEIGHT,
+			x, y, Game.WIDTH + x, Game.HEIGHT + y, null);
+	}
 	
-	    handler.render(g);
+	handler.render(g);
     }
     public void load() {
     }
-    public Player getPlayer() { return player; }
     public int getWidth() { return WIDTH; }
     public int getHeight() { return HEIGHT; }
     public Handler getHandler() { return handler; }

@@ -13,6 +13,7 @@ public class Player extends GameObject {
     
     private int ma = 0;
     private int buffer = 0;
+    
     public Player(int x, int y, ID id) {
 	super(x, y, id);
 	//inAir = 0;
@@ -60,16 +61,16 @@ public class Player extends GameObject {
     }
 
     private void handleInput(){
-	if (Game.input.getW() && Game.input.getS()){
+	if (Game.input.isPressed("w") && Game.input.isPressed("s")){
 	    if (dY > 0)
 		dY -= 1;
 	    else if (dY < 0)
 		dY += 1;
 	}
-	else if (Game.input.getW()){
+	else if (Game.input.isPressed("w")){
 	    dY = -5;
 	}
-	else if (Game.input.getS()){
+	else if (Game.input.isPressed("s")){
 	    dY = 5;
 	}
 	else {
@@ -79,17 +80,17 @@ public class Player extends GameObject {
 		dY += 1;
 	}
 
-	if (Game.input.getA() && Game.input.getD()){
+	if (Game.input.isPressed("a") && Game.input.isPressed("d")){
 	    if (dX > 0)
 		dX -= 1;
 	    else if (dX < 0)
 		dX += 1; 
 	}
-	else if (Game.input.getA()){
+	else if (Game.input.isPressed("a")){
 	    dX = -5;
 	    
 	}
-	else if (Game.input.getD())
+	else if (Game.input.isPressed("d"))
 	    dX = 5;
 	else{
 	    if (dX > 0)
@@ -270,6 +271,8 @@ public class Player extends GameObject {
 	//	   WIDTH, HEIGHT, 100, 0);
 	//new TextBox(g, plyrToScrnX(), plyrToScrnY(), "This is my story of how I created a text wraping ablility out of nothing.\nSuck it java!!!", 100);
 	//inv.render(g);
+
+	//new TextBox(x,y,"Hello from my text box", 100).render(g);
     }
 
 }

@@ -14,6 +14,7 @@ public class Tree extends GameObject {
 	if (img != null){
 	    HEIGHT = img.getHeight();
 	    WIDTH = img.getWidth();
+	    //WIDTH = 53;
 	}
 	else {
 	    HEIGHT = 100;
