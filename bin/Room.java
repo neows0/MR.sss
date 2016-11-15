@@ -26,11 +26,13 @@ public class Room {
 	handler.addObject(player);
 
 	Random r = new Random();
-	for (int i = 0; i < 50; i++){
+	for (int i = 0; i < 100; i++){
 	    int j = r.nextInt(1000);
 	    int k = r.nextInt(1400);
-	    if (!player.getBounds().intersects(j - 100, k - 100, 200, 200))
+	    if (!GameObject.intersects(player,j - 100, k - 100, 0,
+				       200, 200, 200)) {
 		handler.addObject(new Tree(j, k, ID.Obstacle));
+	    }
 	    else {
 		i--;
 	    }

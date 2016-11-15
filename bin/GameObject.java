@@ -8,7 +8,7 @@ public abstract class GameObject {
     protected int x, y, z;
     protected ID id;
     protected int dX, dY, dZ;
-    protected int HEIGHT, WIDTH;
+    protected int HEIGHT, WIDTH, DEPTH;
     protected int IMGHEIGHT;
     protected int IMGWIDTH;
     public BufferedImage img;
@@ -16,6 +16,7 @@ public abstract class GameObject {
     public DirLoader imgFolder;
     //Room lvl;
     protected Direction facing;
+    protected int ground;
 
     public GameObject(int x, int y, ID id) {
 	facing = new Direction();
@@ -23,13 +24,39 @@ public abstract class GameObject {
 	this.y = y;
 	z = 0;
 	this.id = id;
+	ground = 0;
 	//this.lvl = lvl;
     }
 
     public abstract void tick();
     public abstract void render(Graphics g);
-    public Rectangle getBounds() { return getBounds(false); }
-    public abstract Rectangle getBounds(boolean includeZ);
+    //public Rectangle getBounds() { return getBounds(false); }
+    //public abstract Rectangle getBounds(boolean includeZ);
+
+    public boolean intersects(GameObject go) {
+	return (go.x - go.WIDTH / 2 <= x + WIDTH / 2 &&
+		go.x + go.WIDTH / 2 >= x - WIDTH / 2 &&
+		go.y - go.DEPTH / 2 <= y + DEPTH / 2 &&
+		go.y + go.DEPTH / 2 >= y - DEPTH / 2 &&
+		((go.z <= z &&
+		  go.z + go.HEIGHT >= z) ||
+		 (go.z <= z + HEIGHT &&
+		  go.z + go.HEIGHT >= z + HEIGHT)));
+    }
+    public static boolean intersects(GameObject go, int x, int y, int z,
+				     int WIDTH, int DEPTH, int HEIGHT) {
+        return (go.x - go.WIDTH / 2 <= x + WIDTH / 2 &&
+		go.x + go.WIDTH / 2 >= x - WIDTH / 2 &&
+		go.y - go.DEPTH / 2 <= y + DEPTH / 2 &&
+		go.y + go.DEPTH / 2 >= y - DEPTH / 2 &&
+		((go.z <= z &&
+		  go.z + go.HEIGHT >= z) ||
+		 (go.z <= z + HEIGHT &&
+		  go.z + go.HEIGHT >= z + HEIGHT)));
+    }
+
+    
+    
     public abstract void hit(GameObject collided);
 
     public void collision(Handler handler){
@@ -39,19 +66,25 @@ public abstract class GameObject {
 	for(int i = 0; i < handler.objects.size(); i++){
 	    GameObject temp = handler.objects.get(i);
 	    if (temp != this){
-		if(getBounds(iZ).intersects(temp.getBounds(iZ)))
+		//if(getBounds(iZ).intersects(temp.getBounds(iZ)))
+		if(intersects(temp))
 		    hit(temp);
 	    }
 	}
     }
+    public boolean updated() { return (dX != 0 || dY != 0 || dZ != 0); }
     public static GameObject collision(Handler handler, int X, int Y){
 	return collision(handler, X, Y, false);
     }
+    
     public static GameObject collision(Handler handler,
 				       int X, int Y, boolean iZ){
 	for(int i = 0; i < handler.objects.size(); i++){
 	    GameObject temp = handler.objects.get(i);
-	    if(temp.getBounds(iZ).contains(X, Y))
+	    Rectangle rec = new Rectangle(temp.x - temp.IMGWIDTH / 2,
+					  temp.y - temp.IMGHEIGHT / 2,
+			  temp.IMGWIDTH, temp.IMGHEIGHT);
+	    if(rec.contains(X, Y))
 		return temp;
 	}
 	return null;

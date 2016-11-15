@@ -11,7 +11,8 @@ public class Handler {
     //public static Player player;
     
     public void tick(){
-	
+	//used to put the closes objects in the end of the list so they can
+	//appear infront of the other objects
 	Collections.sort(objects, new Comparator<GameObject>() {
 		@Override
 		public int compare(GameObject GO2, GameObject GO1) {
@@ -20,6 +21,9 @@ public class Handler {
 	    });
 	for(int i = 0; i < objects.size(); i++){
 	    objects.get(i).tick();
+	    if (Game.broadcasting && objects.get(i).updated()) {
+		//insert code to update clients
+	    }
 	}
     }
 

@@ -8,8 +8,8 @@ public class Bandana extends Item {
 	imgs = Game.images.getDir("bandana");
 	if (imgs == null)
 	    System.out.println("Error");
-	HEIGHT = imgs.get(0).getHeight();//12
-	WIDTH = imgs.get(0).getWidth();//28
+	IMGHEIGHT = HEIGHT = imgs.get(0).getHeight();//12
+	IMGWIDTH = WIDTH = imgs.get(0).getWidth();//28
 	setRelativeX(0);
 	setRelativeY(23);
 	canEquipped = true;
@@ -19,8 +19,8 @@ public class Bandana extends Item {
 	imgs = Game.images.getDir("bandana");
 	if (imgs == null)
 	    System.out.println("Error");
-	HEIGHT = imgs.get(0).getHeight();
-	WIDTH = imgs.get(0).getWidth();
+	IMGHEIGHT = HEIGHT = imgs.get(0).getHeight();
+	IMGWIDTH = WIDTH = imgs.get(0).getWidth();
 	setRelativeX(0);
 	setRelativeY(23);
     }
@@ -55,11 +55,11 @@ public class Bandana extends Item {
 	    else
 		System.out.println("no direction");
 	
-	    g.drawImage(temp, owner.plyrToScrnX() - WIDTH / 2 + getRelativeX(),
-			owner.plyrToScrnY(true) - HEIGHT / 2 - getRelativeY(),
-			owner.plyrToScrnX() + WIDTH / 2 + getRelativeX(),
-			owner.plyrToScrnY(true) + HEIGHT / 2 - getRelativeY(),
-			0, 0, WIDTH, HEIGHT, null);
+	    g.drawImage(temp, owner.plyrToScrnX() - IMGWIDTH / 2 + getRelativeX(),
+			owner.plyrToScrnY(true) - IMGHEIGHT / 2 - getRelativeY(),
+			owner.plyrToScrnX() + IMGWIDTH / 2 + getRelativeX(),
+			owner.plyrToScrnY(true) + IMGHEIGHT / 2 - getRelativeY(),
+			0, 0, IMGWIDTH, IMGHEIGHT, null);
 	}
     }
     public Rectangle getBounds(boolean includeZ){

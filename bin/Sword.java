@@ -8,8 +8,8 @@ public class Sword extends Item {
 	imgs = Game.images.getDir("sword");
 	if (imgs == null)
 	    System.out.println("Error");
-	HEIGHT = imgs.get(0).getHeight();//12
-	WIDTH = imgs.get(0).getWidth();//28
+	HEIGHT = IMGHEIGHT = imgs.get(0).getHeight();//12
+	WIDTH = IMGWIDTH = imgs.get(0).getWidth();//28
 	setRelativeX(0);
 	setRelativeY(-6);
 	canEquipped = true;
@@ -19,8 +19,8 @@ public class Sword extends Item {
 	imgs = Game.images.getDir("sword");
 	if (imgs == null)
 	    System.out.println("Error");
-	HEIGHT = imgs.get(0).getHeight();
-	WIDTH = imgs.get(0).getWidth();
+	HEIGHT = IMGHEIGHT = imgs.get(0).getHeight();
+	WIDTH = IMGWIDTH = imgs.get(0).getWidth();
 	setRelativeX(0);
 	setRelativeY(-5);
     }
@@ -57,11 +57,11 @@ public class Sword extends Item {
 	    else
 		System.out.println("no direction");
 	
-	    g.drawImage(temp, owner.plyrToScrnX() - WIDTH / 2 + getRelativeX(),
-			owner.plyrToScrnY(true) - HEIGHT / 2 - getRelativeY(),
-			owner.plyrToScrnX() + WIDTH / 2 + getRelativeX(),
-			owner.plyrToScrnY(true) + HEIGHT / 2 - getRelativeY(),
-			0, 0, WIDTH, HEIGHT, null);
+	    g.drawImage(temp, owner.plyrToScrnX() - IMGWIDTH / 2 + getRelativeX(),
+			owner.plyrToScrnY(true) - IMGHEIGHT / 2 - getRelativeY(),
+			owner.plyrToScrnX() + IMGWIDTH / 2 + getRelativeX(),
+			owner.plyrToScrnY(true) + IMGHEIGHT / 2 - getRelativeY(),
+			0, 0, IMGWIDTH, IMGHEIGHT, null);
 	}
     }
     public Rectangle getBounds(boolean includeZ){
