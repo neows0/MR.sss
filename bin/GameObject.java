@@ -32,7 +32,7 @@ public abstract class GameObject {
     public abstract void render(Graphics g);
     //public Rectangle getBounds() { return getBounds(false); }
     //public abstract Rectangle getBounds(boolean includeZ);
-
+    /*
     public boolean intersects(GameObject go) {
 	return (go.x - go.WIDTH / 2 <= x + WIDTH / 2 &&
 		go.x + go.WIDTH / 2 >= x - WIDTH / 2 &&
@@ -42,6 +42,9 @@ public abstract class GameObject {
 		  go.z + go.HEIGHT >= z) ||
 		 (go.z <= z + HEIGHT &&
 		  go.z + go.HEIGHT >= z + HEIGHT)));
+		  }*/
+    public boolean intersects(GameObject go) {
+	return GameObject.intersects(go, x, y, z, WIDTH, DEPTH, HEIGHT);
     }
     public static boolean intersects(GameObject go, int x, int y, int z,
 				     int WIDTH, int DEPTH, int HEIGHT) {
@@ -67,8 +70,10 @@ public abstract class GameObject {
 	    GameObject temp = handler.objects.get(i);
 	    if (temp != this){
 		//if(getBounds(iZ).intersects(temp.getBounds(iZ)))
-		if(intersects(temp))
+		if(intersects(temp)){
 		    hit(temp);
+		    temp.hit(this);
+		}
 	    }
 	}
     }
@@ -108,6 +113,9 @@ public abstract class GameObject {
     public void setY(int y) {
 	this.y = y;
     }
+    public void setZ(int z) {
+	this.z = z;
+    }
     public void setDX(int dX){
 	this.dX = dX;
     }
@@ -123,6 +131,9 @@ public abstract class GameObject {
     }
     public int getY() {
 	return y;
+    }
+    public int getZ() {
+	return z;
     }
     public int getDX(){
 	return dX;

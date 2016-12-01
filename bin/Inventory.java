@@ -44,6 +44,12 @@ public class Inventory {
     
     public void tick() {
     }
+
+    public void renderEquip(Graphics g) {
+	for(int i = 0; i < items.size(); i++){
+	    items.get(i).render(g);
+	}
+    }
     
     public void render(Graphics g) {
 	//System.out.println(Integer.toString(imgs.size()));
@@ -77,9 +83,7 @@ public class Inventory {
 	}
 	
 	
-	for(int i = 0; i < items.size(); i++){
-	    items.get(i).render(g);
-	}
+	
     }
     
 }

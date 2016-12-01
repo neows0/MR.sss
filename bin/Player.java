@@ -13,6 +13,7 @@ public class Player extends GameObject {
     
     private int ma = 0;
     private int buffer = 0;
+    private int moe = 5; //margin of error for the z componet
     
     public Player(int x, int y, ID id) {
 	super(x, y, id);
@@ -35,7 +36,6 @@ public class Player extends GameObject {
 	inv.addItem(new Bandana(this));
 	//inv.equipItem(0);
 	inv.addItem(new Sword(this));
-	
     }
 
     public Inventory getInv() { return inv; }
@@ -49,92 +49,7 @@ public class Player extends GameObject {
 
     public void hit(GameObject col){ 
         if (col.getId() == ID.Obstacle){
-	    /*
-	    if (collided.z <= z && collided.z + HEIGHT >= z){
-		x -= dX;
-		if (collided.intersects(this)){
-		    x += dX;
-		    y -= dY;
-		    if (collided.intersects(this)){
-			x -= dX;
-		    
-		    }
-		}
-		}*/
-	    /*
 	    
-	    boolean isDZ = false;
-	    boolean isDX = false;
-	    boolean isDY = false;
-	    boolean isYX = false;
-	    boolean isXZ = false;
-	    boolean isZY = false;
-	    //is it just Z
-	    x -= dX;
-	    y -= dY; 
-	    if (collided.intersects(this)) {
-		isDZ = true;
-	    }
-   	    //is it just x
-	    x += dX;
-	    z -= dZ;
-	    if (collided.intersects(this)) {
-		isDX = true;
-	    }
-	     //is it just y
-	    y += dY;
-	    x -= dX;
-	    if (collided.intersects(this)) {
-		isDY = true;
-	    }
-	    //is it YX
-	    x += dX;
-	    if (collided.intersects(this)) {
-		isYX = true;
-	    }
-	    //is it XZ
-	    y -= dY;
-	    z += dZ;
-	    if (collided.intersects(this)) {
-		isXZ = true;
-	    }
-	    //is it ZY
-	    x -= dX;
-	    y += dY;
-	    if (collided.intersects(this)) {
-		isZY = true;
-	    }
-
-	    x += dX;
-	    
-	  
-	    
-	    if (isDZ) {
-		z -= dZ;
-		ground = z;
-	    }
-	    if (isDX)
-	    x -= dX;
-	    if (isDY) {
-	    y -= dY;
-	    }*/
-	    /*
-	      x -= dX;
-	      y -= dY;
-	      z -= dZ;
-	      if (!((x < collided.x - collided.WIDTH / 2 &&
-	      x + dX > collided.x - collided.WIDTH / 2) ||
-	      (x > collided.x + collided.WIDTH / 2 &&
-	      x + dX < collided.x + collided.WIDTH / 2)))
-	      x += dX;
-	      if (!((y < collided.y - collided.DEPTH / 2 &&
-	      y + dY > collided.y - collided.DEPTH / 2) ||
-	      (y > collided.y + collided.DEPTH / 2 &&
-	      y + dY < collided.y + collided.DEPTH / 2)))
-	      y += dY;
-	      if (!(z <= collided.z + collided.HEIGHT && z >= collided.z))
-	      z += dZ;
-	    */
 	    int oldX = x - dX;
 	    int oldY = y - dY;
 	    int oldZ = z - dZ;
@@ -148,28 +63,34 @@ public class Player extends GameObject {
 		!(oldY + DEPTH / 2 > col.y - col.DEPTH / 2 &&
 		  oldY - DEPTH /2 < col.y + col.DEPTH / 2))
 		y = oldY;
-	    if ((z + HEIGHT / 2 > col.z - col.HEIGHT / 2 &&
-		 z - HEIGHT /2 < col.z + col.HEIGHT / 2) &&
-		!(oldZ + HEIGHT / 2 > col.z - col.HEIGHT / 2 &&
-		  oldZ - HEIGHT /2 < col.z + col.HEIGHT / 2)) {
-		z = oldZ;
-		ground = z;
-	    }
+	    if ((z + HEIGHT > col.z && z < col.z + col.HEIGHT) &&
+		!(oldZ + HEIGHT > col.z &&
+		  oldZ < col.z + col.HEIGHT)) {
 
-		
+		if (z < oldZ) {
+		    ground = oldZ;
+		}
+		else {
+		    dZ = 0;
+		}
+		z = oldZ;
+	    }	
 	}
 	
     }
 
     private void handleInput(){
+
 	if (Game.input.isPressed("w") && Game.input.isPressed("s")){
 	    if (dY > 0)
 		dY -= 1;
 	    else if (dY < 0)
 		dY += 1;
+	    
 	}
 	else if (Game.input.isPressed("w")){
 	    dY = -5;
+	    
 	}
 	else if (Game.input.isPressed("s")){
 	    dY = 5;
@@ -208,6 +129,7 @@ public class Player extends GameObject {
 		jumpCooldown = 20;
 	    }
 	}
+	
 
 	if (Game.mouse.actionTaken == false){
 	//dX = ((Game.mouse.getXf() - Game.mouse.getXi()) * 100) / Game.WIDTH;
@@ -233,12 +155,32 @@ public class Player extends GameObject {
 	}
     }
 
-    
 
     private void changeDirection(){
+	int angle = facing.getAngle();
+
+
+	float speed = (float) Math.sqrt(dX * dX + dY * dY);
+	if (speed != 0) {
+	    angle = (int)Math.toDegrees(Math.asin(((float) dY)
+	    					      / speed));
+	    angle = -angle;
+	    if (dX < 0 && angle < 0) {
+		angle += 270;
+	    }
+	    else if (dX < 0 && angle > 0) {
+		angle += 90;
+	    }
+	    else if (angle < 0){
+		angle += 360;
+	    }
+	    facing.moveTowards(angle);
+	}
+
 	if (dY > 0){
 	    facing.setForward(true);
 	    facing.setBackward(false);
+	    
 	}
 	else if (dY < 0) {
 	    facing.setForward(false);
@@ -248,6 +190,7 @@ public class Player extends GameObject {
 	    facing.setForward(false);
 	    facing.setBackward(false);
 	}
+	
 	if (dX > 0 ) {
 	    facing.setLeft(false);
 	    facing.setRight(true);
@@ -260,6 +203,8 @@ public class Player extends GameObject {
 	    facing.setLeft(false);
 	    facing.setRight(false);
 	}
+
+	
     }
 
     @Override
@@ -314,17 +259,8 @@ public class Player extends GameObject {
 	    return plyrToScrnY();
     }
 
-    public void render(Graphics g) {
-	BufferedImage temp = imgs.get(8);
-
-	int H = imgs.get(8).getHeight();
-	int W = imgs.get(8).getWidth();
-	g.drawImage(imgs.get(8), plyrToScrnX() + z / 2,
-		    plyrToScrnY() + HEIGHT / 2 - H / 2,
-		    plyrToScrnX() + W + z / 2,
-		    plyrToScrnY() + HEIGHT / 2 + H / 2,
-		    0, 0, W, H, null);
-
+    public BufferedImage getImage() {
+	BufferedImage temp = null;
 	if (facing.getLeft() && facing.getForward())
 	    temp = imgs.get(4);
 	else if (facing.getLeft() && facing.getBackward())
@@ -372,6 +308,21 @@ public class Player extends GameObject {
 	    temp = imgs.get(1);
 	else
 	    System.out.println("no direction");
+	return temp;
+    }
+    
+    public void render(Graphics g) {
+	BufferedImage temp = imgs.get(8);
+
+	int H = imgs.get(8).getHeight();
+	int W = imgs.get(8).getWidth();
+	g.drawImage(imgs.get(8), plyrToScrnX() + z / 2 - ground / 2,
+		    plyrToScrnY() + HEIGHT / 2 - H / 2 - ground,
+		    plyrToScrnX() + W + z / 2 - ground / 2,
+		    plyrToScrnY() + HEIGHT / 2 + H / 2 - ground,
+		    0, 0, W, H, null);
+
+	temp = getImage();
 	g.drawImage(temp, plyrToScrnX() - IMGWIDTH / 2,
 		    plyrToScrnY(true) - IMGHEIGHT / 2, plyrToScrnX() + IMGWIDTH / 2,
 		    plyrToScrnY() + IMGHEIGHT / 2 - z, 0, 0, IMGWIDTH, IMGHEIGHT, null);
@@ -381,6 +332,7 @@ public class Player extends GameObject {
 	//inv.render(g);
 
 	//new TextBox(x,y,"Hello from my text box", 100).render(g);
+	inv.renderEquip(g);
     }
 
 }

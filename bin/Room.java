@@ -25,8 +25,11 @@ public class Room {
 	handler = new Handler();
 	handler.addObject(player);
 
+	handler.addObject(new Bird(500, 500, 250, ID.Obstacle));
+	
 	Random r = new Random();
-	for (int i = 0; i < 100; i++){
+	
+	for (int i = 0; i < 5; i++){
 	    int j = r.nextInt(1000);
 	    int k = r.nextInt(1400);
 	    if (!GameObject.intersects(player,j - 100, k - 100, 0,

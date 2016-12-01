@@ -16,7 +16,10 @@ public class Handler {
 	Collections.sort(objects, new Comparator<GameObject>() {
 		@Override
 		public int compare(GameObject GO2, GameObject GO1) {
-		    return ((Integer)(GO2.getY())).compareTo((Integer)(GO1.getY()));
+		    return ((Integer)
+			    (GO2.getY() + GO2.getZ())).compareTo((Integer)
+								 (GO1.getY() +
+								  GO1.getZ()));
 		}
 	    });
 	for(int i = 0; i < objects.size(); i++){
