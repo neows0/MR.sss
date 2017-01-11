@@ -1,4 +1,3 @@
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -89,20 +88,22 @@ public class KeyInput extends KeyAdapter {
     //public String getInput(){ return input; }
     //public void clearInput(){ input = ""; }
 
-    void addObserver(KeyWatcher o) {
+    public void addObserver(KeyWatcher o) {
 	investigators.add(o);
     }
 
-    void addInputs(MyString in) {
+    public void addInputs(MyString in) {
 	inputs.add(in);
 	//System.out.println(Integer.toString(inputs.size()));
     }
-    void removeInputs(MyString stopInput) {
+    public void removeInputs(MyString stopInput) {
 	inputs.remove(stopInput);
 	//System.out.println(Integer.toString(inputs.size()));
     }
 
-    void notifyObservers() {
+    public void removeObserver(KeyWatcher o) { investigators.remove(o); }
+
+    private void notifyObservers() {
 	for (KeyWatcher o : investigators)
 	    o.update(this);
     }

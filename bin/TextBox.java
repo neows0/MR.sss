@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.FontMetrics;
+import java.awt.image.BufferedImage;
 
 
 public class TextBox{
@@ -8,6 +9,11 @@ public class TextBox{
     protected MyString str;
     protected Color boxColor;
     protected Color textColor;
+    protected boolean expandable;
+    protected boolean isOutlined;
+    protected Color outlineColor;
+    protected int oT;
+    
     public TextBox(int x, int y, String str, int WIDTH, int HEIGHT) {
 	this.x = x;
 	this.y = y;
@@ -17,15 +23,45 @@ public class TextBox{
 	this.HEIGHT = HEIGHT;
 	boxColor = new Color(0, 0, 0, 200);
 	textColor = Color.BLUE;
+	expandable = true;
+	isOutlined = false;
     }
 
     public void render(Graphics g) {
 	Color temp = g.getColor();	
+	
+
+	//g.setColor(textColor);
+	//wrapText(g, x, y + 11, str.data, WIDTH);
+	
+	
+	BufferedImage tmp1 =
+	    new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+	Graphics gr = tmp1.getGraphics();
+	
+	gr.setColor(textColor);
+	//printNewLine(g, x, y + 10, str);
+	
+	int newHeight = 11 * wrapText(gr, 0, 11, str.data, WIDTH) + 3;
+
+	if (HEIGHT < newHeight && expandable)
+	    HEIGHT = newHeight;
+
+	if (isOutlined == true) {
+	    g.setColor(outlineColor);
+	    g.fillRect(x - oT, y - oT,
+		       WIDTH + oT * 2,
+		       HEIGHT + oT * 2);
+	}
+	
 	g.setColor(boxColor);
 	g.fillRect(x, y, WIDTH, HEIGHT);
-	g.setColor(textColor);
-	//printNewLine(g, x, y + 10, str);
-	wrapText(g, x, y + 11, str.data, WIDTH);
+
+	
+
+	g.drawImage(tmp1, x, y, null);
+	
+	
 	//g.drawString(str, x, y);
 	g.setColor(temp);
     }
@@ -36,7 +72,7 @@ public class TextBox{
 	    g.drawString(lines[i], x, y + i * 11);
 	}
     }
-    public void wrapText(Graphics g, int x, int y, String str, int width){
+    public int wrapText(Graphics g, int x, int y, String str, int width){
 	String[] lines = str.split("\n");
 	int tempWidth;
 	FontMetrics fm = g.getFontMetrics();
@@ -85,6 +121,7 @@ public class TextBox{
 		}
 	    }
 	}
+	return line;
     }
     public void setBoxColor(Color myColor) {
 	this.boxColor = myColor;
@@ -110,4 +147,13 @@ public class TextBox{
     public String getString() {
 	return str.data;
     }
+    public boolean getExpandable() { return expandable; }
+    public void setExpandable(boolean e) { expandable = e;}
+    public void setOutline(Color myColor) { setOutline(myColor, 1); }
+    public void setOutline(Color myColor, int t) {
+	outlineColor = myColor;
+	oT = t;
+	isOutlined = true;
+    }
+    public void removeOutline() { isOutlined = false; }
 }

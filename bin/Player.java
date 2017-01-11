@@ -14,6 +14,7 @@ public class Player extends GameObject {
     private int ma = 0;
     private int buffer = 0;
     private int moe = 5; //margin of error for the z componet
+    private int hairStyle = 1;
     
     public Player(int x, int y, ID id) {
 	super(x, y, id);
@@ -25,17 +26,21 @@ public class Player extends GameObject {
 	imgs = Game.images.getDir("player");
 	if (imgs == null)
 	    System.out.println("Error");
-	IMGHEIGHT = imgs.get(4).getHeight();
-	IMGWIDTH = imgs.get(4).getWidth();
+	IMGHEIGHT = 61; //imgs.get(4).getHeight(); //61
+	IMGWIDTH = 32; //imgs.get(4).getWidth();   //32
+	
+	//System.out.println(Integer.toString(IMGHEIGHT));
+	//System.out.println(Integer.toString(IMGWIDTH));
 	
 	HEIGHT = IMGHEIGHT;//imgs.get(4).getHeight();
 	WIDTH = IMGWIDTH;//imgs.get(4).getWidth();
 	DEPTH = WIDTH;
-
+	
 	inv = new Inventory((GameObject)this);
 	inv.addItem(new Bandana(this));
 	//inv.equipItem(0);
 	inv.addItem(new Sword(this));
+
     }
 
     public Inventory getInv() { return inv; }
@@ -80,46 +85,72 @@ public class Player extends GameObject {
     }
 
     private void handleInput(){
-
-	if (Game.input.isPressed("w") && Game.input.isPressed("s")){
-	    if (dY > 0)
-		dY -= 1;
-	    else if (dY < 0)
-		dY += 1;
-	    
+	boolean w = Game.input.isPressed("w");
+	boolean s = Game.input.isPressed("s");
+	boolean a = Game.input.isPressed("a");
+	boolean d = Game.input.isPressed("d");
+	int angle = facing.getAngle();
+	if (a == d && w == s) {
+	    if (dY != 0)
+		dY -= dY / Math.abs(dY);
+	    if (dX != 0)
+		dX -= dX / Math.abs(dX);
 	}
-	else if (Game.input.isPressed("w")){
+	else if (a == d) { //w != s
+	    if (dX != 0)
+		dX -= dX / Math.abs(dX);
+	    
+	    if (w) {
+		dY = -5;
+		angle = 90;
+	    }
+	    else {
+		dY = 5;
+		angle = 270;
+	    }
+	}
+	else if (w == s) { //a != d
+	    if (dY != 0) 
+		dY -= dY / Math.abs(dY);
+	    
+	    if (a) {
+		dX = -5;
+		angle = 180;
+	    }
+	    else {
+		dX = 5;
+		angle = 0;
+	    }
+	}
+	else if (w && a){
 	    dY = -5;
-	    
+	    dX = -5;
+	    angle = 135;
 	}
-	else if (Game.input.isPressed("s")){
+	else if (w && d) {
+	    dY = -5;
+	    dX = 5;
+	    angle = 45;
+	}
+	else if (s && a) {
 	    dY = 5;
+	    dX = -5;
+	    angle = 225;
+	}
+	else if (s && d) {
+	    dY = 5;
+	    dX = 5;
+	    angle = 315;
 	}
 	else {
-	    if (dY > 0)
-		dY -= 1;
-	    else if (dY < 0)
-		dY += 1;
+	    if (dY != 0)
+		dY -= dY / Math.abs(dY);
+	    if (dX != 0)
+		dX -= dX / Math.abs(dX);
 	}
 
-	if (Game.input.isPressed("a") && Game.input.isPressed("d")){
-	    if (dX > 0)
-		dX -= 1;
-	    else if (dX < 0)
-		dX += 1; 
-	}
-	else if (Game.input.isPressed("a")){
-	    dX = -5;
-	    
-	}
-	else if (Game.input.isPressed("d"))
-	    dX = 5;
-	else{
-	    if (dX > 0)
-		dX -= 1;
-	    else if (dX < 0)
-		dX += 1; 
-	}
+	facing.moveTowards(angle, 10);
+	
 
 	if (Game.input.getSpace()){
 	    if (z <= ground && jumpCooldown == 0){
@@ -129,82 +160,10 @@ public class Player extends GameObject {
 		jumpCooldown = 20;
 	    }
 	}
-	
-
-	if (Game.mouse.actionTaken == false){
-	//dX = ((Game.mouse.getXf() - Game.mouse.getXi()) * 100) / Game.WIDTH;
-	//dY = ((Game.mouse.getYf() - Game.mouse.getYi()) * 100) / Game.HEIGHT;
-	    Game.toolBar.input(Game.mouse);
-	    /*
-	    int tX = Game.mouse.getXi();
-	    int tY = Game.mouse.getYi();
-	    Item temp = inv.getItem(tX, tY);
-	    if (temp != null){
-		if (!temp.isEquipped()){
-		    temp.equip();
-		}
-		else{
-		    temp.unequip();
-		}
-		}*/
-	    Game.mouse.actionTaken = true;
-	}
 
 	if (jumpCooldown != 0){
 	    jumpCooldown--;
 	}
-    }
-
-
-    private void changeDirection(){
-	int angle = facing.getAngle();
-
-
-	float speed = (float) Math.sqrt(dX * dX + dY * dY);
-	if (speed != 0) {
-	    angle = (int)Math.toDegrees(Math.asin(((float) dY)
-	    					      / speed));
-	    angle = -angle;
-	    if (dX < 0 && angle < 0) {
-		angle += 270;
-	    }
-	    else if (dX < 0 && angle > 0) {
-		angle += 90;
-	    }
-	    else if (angle < 0){
-		angle += 360;
-	    }
-	    facing.moveTowards(angle);
-	}
-
-	if (dY > 0){
-	    facing.setForward(true);
-	    facing.setBackward(false);
-	    
-	}
-	else if (dY < 0) {
-	    facing.setForward(false);
-	    facing.setBackward(true);
-	}
-	else if (dX != 0) {
-	    facing.setForward(false);
-	    facing.setBackward(false);
-	}
-	
-	if (dX > 0 ) {
-	    facing.setLeft(false);
-	    facing.setRight(true);
-	}
-	else if (dX < 0) {
-	    facing.setLeft(true);
-	    facing.setRight(false);
-	}
-	else if (dY != 0) {
-	    facing.setLeft(false);
-	    facing.setRight(false);
-	}
-
-	
     }
 
     @Override
@@ -223,7 +182,7 @@ public class Player extends GameObject {
 	y = Game.clamp(y, HEIGHT / 2, Game.lvl.getHeight() - HEIGHT);
 	ground = 0;
 	collision(Game.lvl.getHandler());
-	changeDirection();
+
 	if (z > ground){
 	    dZ -= Game.gravity;
 	}
@@ -260,7 +219,7 @@ public class Player extends GameObject {
     }
 
     public BufferedImage getImage() {
-	BufferedImage temp = null;
+	/*BufferedImage temp = null;
 	if (facing.getLeft() && facing.getForward())
 	    temp = imgs.get(4);
 	else if (facing.getLeft() && facing.getBackward())
@@ -274,34 +233,28 @@ public class Player extends GameObject {
 	else if (facing.getRight())
 	    temp = imgs.get(2);
 	else if (facing.getForward()){
-	    if (dY == 0){
+	    try {
+		BufferedImage tmp1 = imgFolder.getDir("Torso").get(0);
+		BufferedImage tmp2 = imgFolder.getDir("Head").get(0);
+		//int w = tmp1.getWidth() + tmp2.getWidth();
+		int w = Math.max(tmp1.getWidth(), tmp2.getWidth());
+		int h = tmp1.getHeight() + tmp2.getHeight();
+		//Math.max(tmp1.getHeight(), tmp2.getHeight());
+		BufferedImage tmp3 =
+		    new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+		Graphics gr = tmp3.getGraphics();
+		gr.drawImage(tmp1, 0, tmp2.getHeight() - 3, null);
+		gr.drawImage(tmp2, (tmp1.getWidth() - tmp2.getWidth()) / 2, 0,
+			     null);
+		tmp2 = imgFolder.getDir("Hair").get(0);
+	        gr.drawImage(tmp2, (tmp1.getWidth() - tmp2.getWidth()) / 2, 0,
+			     null);
+		//g.drawImage(tmp1, 0, 100, null);
+		//g.drawImage(tmp2, w, 100, null);
+		//g.drawImage(tmp3, w * 2, 100, null);
+		temp = tmp3;
+	    } catch (Exception e) {
 		temp = imgs.get(0);
-	    }
-	    else {
-		int i = 0;
-		// % 8 == 0:0 1:9 2:10 3:9 4:0 
-		// % 8 == 5:11 6:12 7:11
-		if (ma % 8 == 0)
-		    i = 0;
-		else if (ma % 8 == 1)
-		    i = 9;
-		else if (ma % 8 == 2)
-		    i = 10;
-		else if (ma % 8 == 3)
-		    i = 9;
-		else if (ma % 8 == 4)
-		    i = 0;
-		else if (ma % 8 == 5)
-		    i = 11;
-		else if (ma % 8 == 6)
-		    i = 12;
-		else
-		    i = 11;
-		temp = imgs.get(i);
-		if (buffer % 20 / dY == 0)
-		    ma++;
-		buffer++;
-
 	    }
 	}
 	else if (facing.getBackward())
@@ -309,11 +262,49 @@ public class Player extends GameObject {
 	else
 	    System.out.println("no direction");
 	return temp;
+				  */
+	BufferedImage tmp2 = getHeadImg();
+	BufferedImage tmp1 = getBodyImg();
+	int w = Math.max(tmp1.getWidth(), tmp2.getWidth());
+	int h = tmp1.getHeight() + tmp2.getHeight();
+	BufferedImage tmp3 =
+		    new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+	Graphics gr = tmp3.getGraphics();
+	gr.drawImage(tmp1, 0, tmp2.getHeight() - 2, null);
+	gr.drawImage(tmp2, (tmp1.getWidth() - tmp2.getWidth()) / 2, 0,
+		     null);
+	
+	return tmp3;
     }
+    
+    public BufferedImage getHeadImg() {
+	int angle = facing.getSimpleAngle();
+	
+	BufferedImage tmp1 = imgFolder.getDir("Head").get(angle / 45);
+	BufferedImage tmp2 = imgFolder.getDir("Hair").get(angle / 45);
+	int w = Math.max(tmp1.getWidth(), tmp2.getWidth());
+	int h = Math.max(tmp1.getHeight(), tmp2.getHeight());
+	BufferedImage tmp3 =
+		    new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+	Graphics gr = tmp3.getGraphics();
+	gr.drawImage(tmp1, 0, 0, null);
+	if (hairStyle != 0)
+	    gr.drawImage(tmp2, 0, 0, null);
+	return tmp3;
+    }
+
+    public BufferedImage getBodyImg() {
+	int angle = facing.getSimpleAngle();
+	BufferedImage tmp1 = imgFolder.getDir("Torso").get(angle / 45);
+	return tmp1;
+    }
+
+
     
     public void render(Graphics g) {
 	BufferedImage temp = imgs.get(8);
 
+	
 	int H = imgs.get(8).getHeight();
 	int W = imgs.get(8).getWidth();
 	g.drawImage(imgs.get(8), plyrToScrnX() + z / 2 - ground / 2,

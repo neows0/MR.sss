@@ -6,10 +6,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+
 
 public class MouseInput extends MouseAdapter implements MouseMotionListener{
 
-    Game game;
     private volatile int xi = 0;
     private volatile int yi = 0;
     private volatile int xf = 0;
@@ -18,12 +19,11 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener{
     private volatile int y = 0;
     private boolean leftClick = false;
     public boolean actionTaken = true;
-    
-    public MouseInput(Game game){
-	this.game = game;
-    }
+
+    private ArrayList<MouseWatcher> investigators;
 
     public MouseInput(){
+	investigators = new ArrayList<MouseWatcher>();
     }
     
     public void mousePressed(MouseEvent e){
@@ -33,6 +33,7 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener{
 	leftClick = true;
 	actionTaken = true;
 	//210 150 200 64
+	notifyObservers();
     }
 
     public void mouseReleased(MouseEvent e){
@@ -71,4 +72,18 @@ public class MouseInput extends MouseAdapter implements MouseMotionListener{
 	else
 	    return false;
     }
+
+     public void addObserver(MouseWatcher o) {
+	investigators.add(o);
+    }
+
+    public void removeObserver(MouseWatcher o) {
+	investigators.remove(o);
+    }
+
+     private void notifyObservers() {
+	for (MouseWatcher o : investigators)
+	    o.update(this);
+    }
+    
 }

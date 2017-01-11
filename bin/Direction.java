@@ -17,6 +17,26 @@ public class Direction{
     public boolean getLeft(){ return left; }
     public boolean getRight(){ return right; }
     public int getAngle(){ return angle; }
+    public int getSimpleAngle() {
+	if (angle > 337 || angle < 22)
+	    return 0;
+	else if (angle >= 22 && angle < 67)
+	    return 45;
+	else if (angle >= 67 && angle < 112)
+	    return 90;
+	else if (angle >= 112 && angle < 157)
+	    return 135;
+	else if (angle >= 157 && angle < 202)
+	    return 180;
+	else if (angle >= 202 && angle < 247)
+	    return 225;
+	else if (angle >= 247 && angle < 292)
+	    return 270;
+	else if (angle >= 292 && angle < 337)
+	    return 315;
+	else
+	    return 0;
+    }
     public void setForward(boolean forward) {
 	this.forward = forward;
     }

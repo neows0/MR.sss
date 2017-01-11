@@ -12,7 +12,7 @@ import java.awt.Dimension;
  * BufferedImage.getSubimage(int x, int y, int w, int h);
  */
 
-public class Game extends Canvas implements Runnable{
+public class Game extends Canvas implements Runnable, MouseWatcher{
 
     private static final long serialVersionUID = 1550691097823471818L;
 
@@ -55,7 +55,7 @@ public class Game extends Canvas implements Runnable{
 	Game
     };
 
-    public STATE gameState = STATE.Game;
+    private STATE gameState = STATE.Menu;
     
     
     public Game(){
@@ -66,24 +66,39 @@ public class Game extends Canvas implements Runnable{
 	
 	input = new KeyInput();
 	mouse = new MouseInput();
-	menu = new Menu(this);
+
 	
 	this.addKeyListener(input);
 	this.addMouseListener(mouse);
 	//this.addMouseWheelListener(mouse);
 	this.addMouseMotionListener(mouse);
 	
+	mouse.addObserver(this);
+	
 	new Window(SCRNWIDTH, SCRNHEIGHT, "mrSSS", this);
 	
 	r = new Random();
 
 	if (gameState == STATE.Game){
-	    player = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player);
-	    lvl = new Room(player, "alpah");
-	    toolBar = new Toolbar(player);
-	    //LoadRoom(lvl, "alpah", player);
+	    startRoom();
 	}
+	else if (gameState == STATE.Menu){
+	    startMenu();
+	}
+	System.out.println(Integer.toString(SCRNWIDTH) + " " +
+			   Integer.toString(SCRNHEIGHT));
 	
+    }
+
+    private void startRoom() {
+	player = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player);
+	lvl = new Room(player, "alpah");
+	toolBar = new Toolbar(player);
+	//LoadRoom(lvl, "alpah", player);
+    }
+
+    private void startMenu() {
+	menu = new Menu();
     }
     
     public synchronized void start(){
@@ -218,6 +233,25 @@ public class Game extends Canvas implements Runnable{
 	else
 	    return var;
     }
+
+    public void update(MouseInput mi) {
+	if (gameState == STATE.Game) {
+	    toolBar.mouseClick(mi.getX(), mi.getY());
+	    
+	}
+	else if (gameState == STATE.Menu){
+	    //menu.render(g);
+	    menu.mouseClick(mi.getX(), mi.getY());
+	    if (menu.getNextState() == STATE.Game){
+		gameState = STATE.Game;
+		startRoom();
+	    }
+	    
+	}
+	
+	
+    }
+    public boolean contains(int x, int y) { return true; }
     
     public static void main(String [] args) {
 	 new Game();

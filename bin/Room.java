@@ -40,6 +40,17 @@ public class Room {
 		i--;
 	    }
 	}
+	for (int i = 0; i < 10; i++){
+	    int j = r.nextInt(1000);
+	    int k = r.nextInt(1400);
+	    if (!GameObject.intersects(player,j - 100, k - 100, 0,
+				       200, 200, 200)) {
+		handler.addObject(new Rock(j, k, ID.Obstacle));
+	    }
+	    else {
+		i--;
+	    }
+	}
 	
     }
     public void loadRoom(String newRoomName){
@@ -49,6 +60,11 @@ public class Room {
 	if (l != null)
 	    System.out.println(l[0]);
     }
+
+    public void mouseClick(int x, int y) {
+	
+    }
+    
     public void tick() {
 	handler.tick();
     }

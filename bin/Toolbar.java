@@ -12,26 +12,33 @@ public class Toolbar implements KeyWatcher{
     private JTextField Input = new JTextField();
     
     private DirLoader imgFolder;
-    private Player thisPlayer;
     private int toolState;
     private final static int INV = 0;
     private final static int SKILLS = 1;
     private Button startServer;
     private Button joinServer;
+    private Button inventory;
     public boolean joiningServer;
     public Toolbar(Player player){
 	imgFolder = Game.images.getDirLoader("toolbar");
-	thisPlayer = player;
 	toolState = INV;
 	startServer = new Button(0, 0, "Start Server", 100, 50);
 	joinServer = new Button(100, 0, "Join Server", 100, 50);
+	inventory = new Button(Game.SCRNWIDTH - 100, Game.SCRNHEIGHT - 50,
+			       "INV", 20, 20);
+	inventory.setExpandable(false);
+	Color n = new Color(127, 51, 0);
+	inventory.setBoxColor(n);
+	n = new Color(61, 24, 0);
+	inventory.setOutline(n, 3);
+	inventory.setToggleColor(n, new Color(48, 13, 0));
 	Game.input.addObserver(this);
     }
-    public void input(MouseInput mI){
-	int tX = mI.getXi();
-	int tY = mI.getYi();
+    public void mouseClick(int tX, int tY){//MouseInput mI){
+	//int tX = mI.getXi();
+	//int tY = mI.getYi();
 	if (toolState == INV){   
-	    Item temp = thisPlayer.getInv().getItem(tX, tY);
+	    Item temp = Game.player.getInv().getItem(tX, tY);
 	    if (temp != null){
 		if (!temp.isEquipped()){
 		    temp.equip();
@@ -39,6 +46,9 @@ public class Toolbar implements KeyWatcher{
 		else{
 		    temp.unequip();
 		}
+	    }
+	    if (inventory.contains(tX, tY)) {
+		inventory.toggle();
 	    }
 	}
 	else if (toolState == SKILLS) {
@@ -58,14 +68,14 @@ public class Toolbar implements KeyWatcher{
     }
     public void tick(){
 	if (toolState == INV) {
-	    thisPlayer.getInv().tick();
+	    Game.player.getInv().tick();
 	}
 	else if (toolState == SKILLS) {
 	}
     }
     public void render(Graphics g){
-	if (toolState == INV){
-	    thisPlayer.getInv().render(g);
+	if (toolState == INV) { // && !inventory.isPressed()){
+	    Game.player.getInv().render(g);
 	}
 	else if (toolState == SKILLS) {
 	}
@@ -74,6 +84,7 @@ public class Toolbar implements KeyWatcher{
 	if (joiningServer)
 	joinServer.setText(Game.input.getInput());*/
 	joinServer.render(g);
+	inventory.render(g);
         
     }
     public void update(KeyInput ki){
