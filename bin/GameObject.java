@@ -17,9 +17,11 @@ public abstract class GameObject {
     //Room lvl;
     protected Direction facing;
     protected int ground;
+    protected Inventory inv;
 
     public GameObject(int x, int y, ID id) {
 	facing = new Direction();
+	inv = new Inventory(this);
 	this.x = x;
 	this.y = y;
 	z = 0;
@@ -122,9 +124,30 @@ public abstract class GameObject {
     public void setDY(int dY){
 	this.dY = dY;
     }
-    public void setDir(Direction facing){this.facing = facing;}
+    public void setDZ(int dZ){
+	this.dZ = dZ;
+    }
+    public void setDir(Direction facing){
+	this.facing = facing;
+    }
 
-    public Direction getDir() {return this.facing;}
+    public void setGround(int ground){
+	this.ground = ground;
+    }
+    public void setInv(Inventory inv){
+	this.inv = inv;
+    }
+    
+    public Inventory getInv(){
+	return inv;
+    }
+    public int getGround() {
+	return ground;
+    }
+
+    public Direction getDir() {
+	return this.facing;
+    }
 
      public int getX() {
 	return x;
@@ -140,6 +163,9 @@ public abstract class GameObject {
     }
     public int getDY(){
 	return dY;
+    }
+    public int getDZ(){
+	return dZ;
     }
     public ID getId(){
 	return id;

@@ -38,7 +38,7 @@ public class Toolbar implements KeyWatcher{
 	//int tX = mI.getXi();
 	//int tY = mI.getYi();
 	if (toolState == INV){   
-	    Item temp = Game.player.getInv().getItem(tX, tY);
+	    Item temp = Game.player.getEntity().getInv().getItem(tX, tY);
 	    if (temp != null){
 		if (!temp.isEquipped()){
 		    temp.equip();
@@ -68,14 +68,14 @@ public class Toolbar implements KeyWatcher{
     }
     public void tick(){
 	if (toolState == INV) {
-	    Game.player.getInv().tick();
+	    Game.player.getEntity().getInv().tick();
 	}
 	else if (toolState == SKILLS) {
 	}
     }
     public void render(Graphics g){
 	if (toolState == INV) { // && !inventory.isPressed()){
-	    Game.player.getInv().render(g);
+	    Game.player.getEntity().getInv().render(g);
 	}
 	else if (toolState == SKILLS) {
 	}

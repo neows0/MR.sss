@@ -91,8 +91,9 @@ public class Game extends Canvas implements Runnable, MouseWatcher{
     }
 
     private void startRoom() {
-	player = new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player);
-	lvl = new Room(player, "alpah");
+	player = new Player();
+	lvl = new Room("alpah");
+	lvl.addGameObject(player.getEntity());
 	toolBar = new Toolbar(player);
 	//LoadRoom(lvl, "alpah", player);
     }
@@ -154,6 +155,9 @@ public class Game extends Canvas implements Runnable, MouseWatcher{
 	    if (toolBar != null){
 		toolBar.tick();
 	    }
+	    if (player != null){
+		player.handleInput();
+	    }
 	}
 	else if (gameState == STATE.Menu){
 	    menu.tick();
@@ -199,7 +203,7 @@ public class Game extends Canvas implements Runnable, MouseWatcher{
 
     //stupid java not allowing pass by refrence!!!
     public static void screenLoc(int[] array){ //the array should be x and y
-	GameObject temp = player;
+	GameObject temp = player.getEntity();
 	if (temp != null) {
 	    int x;
 	    int y;

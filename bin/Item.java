@@ -12,8 +12,8 @@ public abstract class Item extends GameObject{
     protected int relativeX;
     protected int relativeY;
     //change player to something like living (have to create a living first)
-    protected Player owner;
-    public Item(ITMID itId, Player owner){ 
+    protected GameObject owner;
+    public Item(ITMID itId, GameObject owner){ 
 	this(-1, -1, itId, false);
 	this.owner = owner;
     }
@@ -47,8 +47,8 @@ public abstract class Item extends GameObject{
     
     public void setRelativeX(int rX) {relativeX = rX;}
     public void setRelativeY(int rY) {relativeY = rY;}
-    public void setOwner(Player owner) {this.owner = owner;}
-    public Player getOwner() {return owner;}
+    public void setOwner(GameObject owner) {this.owner = owner;}
+    public GameObject getOwner() {return owner;}
     public int getRelativeX(){return relativeX;}
     public int getRelativeY(){return relativeY;}
     public boolean getOnGround(){return onGround;}

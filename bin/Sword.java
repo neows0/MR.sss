@@ -3,7 +3,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Sword extends Item {
-    public Sword(Player owner) {
+    public Sword(GameObject owner) {
 	super(ITMID.Bandana, owner);
 	imgs = Game.images.getDir("sword");
 	if (imgs == null)
@@ -57,10 +57,10 @@ public class Sword extends Item {
 	    else
 		System.out.println("no direction");
 	
-	    g.drawImage(temp, owner.plyrToScrnX() - IMGWIDTH / 2 + getRelativeX(),
-			owner.plyrToScrnY(true) - IMGHEIGHT / 2 - getRelativeY(),
-			owner.plyrToScrnX() + IMGWIDTH / 2 + getRelativeX(),
-			owner.plyrToScrnY(true) + IMGHEIGHT / 2 - getRelativeY(),
+	    g.drawImage(temp, owner.getX() - IMGWIDTH / 2 + getRelativeX(),
+			owner.getY() - IMGHEIGHT / 2 - getRelativeY(),
+			owner.getX() + IMGWIDTH / 2 + getRelativeX(),
+			owner.getY() + IMGHEIGHT / 2 - getRelativeY(),
 			0, 0, IMGWIDTH, IMGHEIGHT, null);
 	}
     }

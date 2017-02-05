@@ -3,7 +3,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Bandana extends Item {
-    public Bandana(Player owner) {
+    public Bandana(GameObject owner) {
 	super(ITMID.Bandana, owner);
 	imgs = Game.images.getDir("bandana");
 	if (imgs == null)
@@ -33,7 +33,10 @@ public class Bandana extends Item {
         g.drawImage(imgs.get(8), x + 3, y + 7, null);
     }
     public void render(Graphics g){
-	
+	int [] cord = { 0, 0 };
+	Game.screenLoc(cord);
+	int tempX = owner.getX() - cord[0];
+	int tempY = owner.getY() - cord[1];
 	if (isEquipped()){
 	    BufferedImage temp = imgs.get(3);
 	    if (facing.getLeft() && facing.getForward())
@@ -55,10 +58,10 @@ public class Bandana extends Item {
 	    else
 		System.out.println("no direction");
 	
-	    g.drawImage(temp, owner.plyrToScrnX() - IMGWIDTH / 2 + getRelativeX(),
-			owner.plyrToScrnY(true) - IMGHEIGHT / 2 - getRelativeY(),
-			owner.plyrToScrnX() + IMGWIDTH / 2 + getRelativeX(),
-			owner.plyrToScrnY(true) + IMGHEIGHT / 2 - getRelativeY(),
+	    g.drawImage(temp, tempX - IMGWIDTH / 2 + getRelativeX(),
+			tempY - IMGHEIGHT / 2 - getRelativeY(),
+			tempX + IMGWIDTH / 2 + getRelativeX(),
+			tempY + IMGHEIGHT / 2 - getRelativeY(),
 			0, 0, IMGWIDTH, IMGHEIGHT, null);
 	}
     }

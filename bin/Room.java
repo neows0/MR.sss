@@ -11,7 +11,7 @@ public class Room {
 
     private String roomName;
     
-    public Room(Player player, String roomName) {
+    public Room(String roomName) {
 	loadRoom(roomName);
 	
 	if (Game.images.getDir("background") == null){
@@ -23,7 +23,6 @@ public class Room {
 	    HEIGHT = backGround.getHeight();
 	}
 	handler = new Handler();
-	handler.addObject(player);
 
 	handler.addObject(new Bird(500, 500, 250, ID.Obstacle));
 	
@@ -32,27 +31,16 @@ public class Room {
 	for (int i = 0; i < 5; i++){
 	    int j = r.nextInt(1000);
 	    int k = r.nextInt(1400);
-	    if (!GameObject.intersects(player,j - 100, k - 100, 0,
-				       200, 200, 200)) {
-		handler.addObject(new Tree(j, k, ID.Obstacle));
-	    }
-	    else {
-		i--;
-	    }
+	    handler.addObject(new Tree(j, k, ID.Obstacle));
 	}
 	for (int i = 0; i < 10; i++){
 	    int j = r.nextInt(1000);
 	    int k = r.nextInt(1400);
-	    if (!GameObject.intersects(player,j - 100, k - 100, 0,
-				       200, 200, 200)) {
-		handler.addObject(new Rock(j, k, ID.Obstacle));
-	    }
-	    else {
-		i--;
-	    }
+	    handler.addObject(new Rock(j, k, ID.Obstacle));
 	}
 	
     }
+    public void addGameObject(GameObject go) { handler.addObject(go); }
     public void loadRoom(String newRoomName){
 	this.roomName = newRoomName;
 	File folder = new File("../rooms/" + newRoomName + "/");
