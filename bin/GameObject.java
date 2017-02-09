@@ -18,6 +18,8 @@ public abstract class GameObject {
     protected Direction facing;
     protected int ground;
     protected Inventory inv;
+    protected int feildOfVision;
+    protected Routine brain;
 
     public GameObject(int x, int y, ID id) {
 	facing = new Direction();
@@ -27,7 +29,19 @@ public abstract class GameObject {
 	z = 0;
 	this.id = id;
 	ground = 0;
+	feildOfVision = 300;
 	//this.lvl = lvl;
+	Room board = Game.lvl;
+	/*
+	brain = Routines.repeat(
+		Routines.sequence(
+				  Routines.moveTo(100, 200),
+				  Routines.repeat(Routines.wander(board), 4),
+				  Routines.moveTo(1000, 1200),
+				  Routines.repeat(Routines.wander(board), 4),
+				  Routines.moveTo(200, 1400),
+				  Routines.repeat(Routines.wander(board), 4)),
+				  -1);*/
     }
 
     public abstract void tick();
@@ -137,7 +151,16 @@ public abstract class GameObject {
     public void setInv(Inventory inv){
 	this.inv = inv;
     }
-    
+    public void setFeildOfVision(int fov){
+	this.feildOfVision = fov;
+    }
+    public void setAI(Routine brain){
+	this.brain = brain;
+    }
+
+    public Routine getAI(Routine brain){
+	return brain;
+    }
     public Inventory getInv(){
 	return inv;
     }
@@ -169,5 +192,8 @@ public abstract class GameObject {
     }
     public ID getId(){
 	return id;
+    }
+    public int getFeildOfVision(){
+	return feildOfVision;
     }
 }

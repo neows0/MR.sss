@@ -32,9 +32,9 @@ public class Human extends GameObject {
 	//System.out.println(Integer.toString(IMGHEIGHT));
 	//System.out.println(Integer.toString(IMGWIDTH));
 	
-	HEIGHT = IMGHEIGHT;//imgs.get(4).getHeight();
-	WIDTH = IMGWIDTH;//imgs.get(4).getWidth();
-	DEPTH = WIDTH;
+	HEIGHT = IMGHEIGHT * 3 / 5;//imgs.get(4).getHeight();
+	WIDTH = IMGWIDTH * 4 / 5;//imgs.get(4).getWidth();
+	DEPTH = IMGWIDTH / 2;
 	
 	inv = new Inventory((GameObject)this);
 	inv.addItem(new Bandana(this));
@@ -53,7 +53,7 @@ public class Human extends GameObject {
     }
 
     public void hit(GameObject col){ 
-        if (col.getId() == ID.Obstacle){
+        if (col.getId() != ID.Item){
 	    
 	    int oldX = x - dX;
 	    int oldY = y - dY;
@@ -158,14 +158,14 @@ public class Human extends GameObject {
 	int H = imgs.get(8).getHeight();
 	int W = imgs.get(8).getWidth();
 	g.drawImage(imgs.get(8), tempX + z / 2,
-		    tempY + HEIGHT / 2 - H / 2,
+		    tempY + IMGHEIGHT / 2 - H / 2,
 		    tempX + W + z / 2,
-		    tempY + HEIGHT / 2 + H / 2,
+		    tempY + IMGHEIGHT / 2 + H / 2,
 		    0, 0, W, H, null);
 	
-	g.drawImage(getImage(), tempX - WIDTH / 2, tempY - HEIGHT / 2 - z,
-		    tempX + WIDTH / 2, tempY + HEIGHT / 2 - z,
-		    0, 0, WIDTH, HEIGHT, null);
+	g.drawImage(getImage(), tempX - IMGWIDTH / 2, tempY - IMGHEIGHT / 2 - z,
+		    tempX + IMGWIDTH / 2, tempY + IMGHEIGHT / 2 - z,
+		    0, 0, IMGWIDTH, IMGHEIGHT, null);
 	/*
 	int H = imgs.get(8).getHeight();xs
 	int W = imgs.get(8).getWidth();

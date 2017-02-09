@@ -52,4 +52,8 @@ public class Handler {
     public void removeObject(GameObject object) {
 	objects.remove(object);
     }
+
+    public LinkedList getObjectList(){
+	return objects;
+    }
 }

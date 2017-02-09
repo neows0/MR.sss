@@ -27,6 +27,9 @@ public class Room {
 	handler.addObject(new Bird(500, 500, 250, ID.Obstacle));
 	
 	Random r = new Random();
+
+	handler.addObject(new Human(r.nextInt(1000), r.nextInt(1400),
+				    ID.AIUnit));
 	
 	for (int i = 0; i < 5; i++){
 	    int j = r.nextInt(1000);
@@ -83,4 +86,5 @@ public class Room {
     public int getWidth() { return WIDTH; }
     public int getHeight() { return HEIGHT; }
     public Handler getHandler() { return handler; }
+    //public 
 }
