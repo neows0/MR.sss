@@ -13,7 +13,9 @@ public class Repeat extends Routine {
 
     public Repeat(Routine routine, int times) {
         super();
-        if (times < 1) {
+	if (times == -1)
+	    originalTimes = times;
+        else if (times < 1) {
             throw new RuntimeException("Can't repeat negative times.");
         }
         this.routine = routine;
@@ -37,6 +39,7 @@ public class Repeat extends Routine {
         if (routine.isFailure()) {
             fail();
         } else if (routine.isSuccess()) {
+	    //System.out.println("Success");
             if (times == 0) {
                 succeed();
                 return;

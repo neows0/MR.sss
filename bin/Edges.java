@@ -1,16 +1,42 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Edges{
     private Boolean inside;
     private Cordinate[] edgelist;
+    private ArrayList<Vector> edges;
     Edges(Boolean inside, Cordinate... edgelist) {
 	this.inside = inside;
 	this.edgelist = edgelist;
 	if (edgelist.length < 3){
 	    System.out.println("Error list must be 3 or greater!");
 	}
+	else{
+	    edges = new ArrayList<Vector>();
+	     for(int i = 0; i < edgelist.length; i++){
+		 Cordinate c1 = edgelist[i];
+		 Cordinate c2 = edgelist[(i + 1) % edgelist.length];
+		 edges.add(new Vector(c1, c2));
+	     }
+	}
     }
+
+    public ArrayList<Vector> collectCrossing(Cordinate c1, Cordinate c2){
+	ArrayList<Vector> crossing = new ArrayList<Vector>();
+	if(edgelist != null && edgelist.length >= 3){
+	    for(int i = 0; i < edgelist.length; i++){
+		Cordinate c3 = edgelist[i];
+		Cordinate c4 = edgelist[(i + 1) % edgelist.length];
+		if(doesCross(c1,c2,c3,c4)){
+		    crossing.add(new Vector(c3,c4));
+		}
+	    }
+	    return crossing;
+	}
+	return crossing;
+    }
+    
     public boolean doesCross(Cordinate c1, Cordinate c2){
+	/*
 	if(edgelist != null && edgelist.length >= 3){
 	    boolean crosses = false;
 	    for(int i = 0; i < edgelist.length; i++){
@@ -19,8 +45,8 @@ public class Edges{
 		crosses = crosses || doesCross(c1,c2,c3,c4);
 	    }
 	    return crosses;
-	}
-	return false;
+	    }*/
+	return collectCrossing(c1,c2).size() > 0;
     }
     
     public static boolean doesCross(Cordinate c1, Cordinate c2,
@@ -61,6 +87,7 @@ public class Edges{
 	    return ((float)(c1.y - c2.y)) / ((float)(c1.x - c2.x));
 	}
     }
+    
     private static boolean between(int x1, int x2, int x){
 	return (x <= x1 && x >= x2) || (x >= x1 && x <= x2);
     }

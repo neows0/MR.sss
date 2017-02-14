@@ -53,7 +53,19 @@ public class Handler {
 	objects.remove(object);
     }
 
-    public LinkedList getObjectList(){
+    public LinkedList<GameObject> getObjectList(){
 	return objects;
+    }
+
+    public LinkedList<Thing> getObsticals(GameObject notThis){
+	if (objects != null && objects.size() > 0){
+	    LinkedList<Thing> obsticals = new LinkedList<Thing>();
+	    for(GameObject go : objects){
+		obsticals.add(go.getThing());
+	    }
+	    return obsticals;
+	}
+	return null;
+	
     }
 }

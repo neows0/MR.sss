@@ -79,16 +79,32 @@ public class Human extends GameObject {
 		    dZ = 0;
 		}
 		z = oldZ;
-	    }	
+	    }
+
+	    if (id == ID.AIUnit && brain != null){
+		brain.reset();
+		brain.start();
+	    }
 	}
 	
     }
 
-   
-
     @Override
     public void tick() {
-		
+	
+	if (id == ID.AIUnit && brain == null){
+	    brain = Routines.repeat(Routines.wander(Game.lvl), -1);
+	    brain.start();
+	    System.out.println("new brain");
+	}
+	else if (id == ID.AIUnit){
+	    if (brain.getState() == null) {
+		// hasn't started yet so we start it
+		brain.start();
+	    }
+	    brain.act(this,Game.lvl);
+	}
+	rotate();
 	z += dZ;
 	x += dX;
 	y += dY;
@@ -107,6 +123,35 @@ public class Human extends GameObject {
 	    z = 0;
 	    dZ = 0;
 	}
+    }
+
+    private void rotate(){
+	int angle = facing.getAngle();
+	if(dX > 0 && dY > 0){
+	    angle = 315;
+	}
+	else if(dX > 0 && dY < 0){
+	    angle = 45;
+	}
+	else if(dX > 0){
+	    angle = 0;
+	}
+	else if(dX < 0 && dY > 0){
+	    angle = 225;
+	}
+	else if(dX < 0 && dY < 0){
+	    angle = 135;
+	}
+	else if(dX < 0){
+	    angle = 180;
+	}
+	else if(dY > 0){
+	    angle = 270;
+	}
+	else if(dY < 0){
+	    angle = 90;
+	}
+	facing.moveTowards(angle, 10);
     }
 
    

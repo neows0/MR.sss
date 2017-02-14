@@ -2,6 +2,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.io.File;
+import java.util.LinkedList;
+
 
 public class Room {
     private int WIDTH;
@@ -10,10 +12,13 @@ public class Room {
     private Handler handler;
 
     private String roomName;
+    private Edges boarder;
     
     public Room(String roomName) {
+
+	WIDTH = 0;
+	HEIGHT = 0;
 	loadRoom(roomName);
-	
 	if (Game.images.getDir("background") == null){
 	    System.out.println("couldn't find background");
 	}
@@ -22,8 +27,16 @@ public class Room {
 	    WIDTH = backGround.getWidth();
 	    HEIGHT = backGround.getHeight();
 	}
+	boarder = new Edges(true, new Cordinate(0,0),
+			    new Cordinate(0,HEIGHT),
+			    new Cordinate(WIDTH,HEIGHT),
+			    new Cordinate(WIDTH,0));
 	handler = new Handler();
 
+	testRoom();
+	
+    }
+    private void testRoom(){
 	handler.addObject(new Bird(500, 500, 250, ID.Obstacle));
 	
 	Random r = new Random();
@@ -41,7 +54,6 @@ public class Room {
 	    int k = r.nextInt(1400);
 	    handler.addObject(new Rock(j, k, ID.Obstacle));
 	}
-	
     }
     public void addGameObject(GameObject go) { handler.addObject(go); }
     public void loadRoom(String newRoomName){
@@ -86,5 +98,10 @@ public class Room {
     public int getWidth() { return WIDTH; }
     public int getHeight() { return HEIGHT; }
     public Handler getHandler() { return handler; }
-    //public 
+    public Edges getEdges() { return boarder; }
+    public LinkedList<Thing> getObsticals(GameObject notThis){
+	LinkedList<Thing> o = handler.getObsticals(notThis);
+	o.add(new Thing(getEdges(), new Cordinate(WIDTH/2,HEIGHT/2)));
+	return o;
+    }
 }

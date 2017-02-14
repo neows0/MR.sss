@@ -31,9 +31,10 @@ public abstract class GameObject {
 	ground = 0;
 	feildOfVision = 300;
 	//this.lvl = lvl;
-	Room board = Game.lvl;
-	/*
-	brain = Routines.repeat(
+
+	if (Game.lvl != null && id == ID.AIUnit){
+	    Room board = Game.lvl;
+	    brain = Routines.repeat(
 		Routines.sequence(
 				  Routines.moveTo(100, 200),
 				  Routines.repeat(Routines.wander(board), 4),
@@ -41,7 +42,10 @@ public abstract class GameObject {
 				  Routines.repeat(Routines.wander(board), 4),
 				  Routines.moveTo(200, 1400),
 				  Routines.repeat(Routines.wander(board), 4)),
-				  -1);*/
+				  -1);
+	    brain.start();
+	}
+	//brain = Routines.moveTo(5, 10);
     }
 
     public abstract void tick();
@@ -195,5 +199,15 @@ public abstract class GameObject {
     }
     public int getFeildOfVision(){
 	return feildOfVision;
+    }
+    public Edges getEdges(){
+	return new Edges(false, new Cordinate(0,0), new Cordinate(0,DEPTH),
+			 new Cordinate(WIDTH,DEPTH), new Cordinate(WIDTH, 0));
+    }
+    public Cordinate getLocation(){
+	return new Cordinate(x,y,z);
+    }
+    public Thing getThing(){
+	return new Thing(getEdges(),getLocation());
     }
 }

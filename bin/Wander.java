@@ -14,13 +14,33 @@ public class Wander extends Routine {
     }
 
     public void reset() {
-        this.moveTo = new MoveTo(random.nextInt(board.getWidth()), random.nextInt(board.getHeight()));
+        this.moveTo = new MoveTo(randomBetween(200,board.getWidth()),
+				 randomBetween(200,board.getHeight()));
     }
 
     public Wander(Room board) {
         super();
-        this.board = board;
-        this.moveTo = new MoveTo(random.nextInt(board.getWidth()), random.nextInt(board.getHeight()));
+
+	this.board = board;
+	random = new Random();
+	if (board != null){
+	    this.moveTo = new MoveTo(randomBetween(200,board.getWidth()),
+				     randomBetween(200,board.getHeight()));
+	    //this.moveTo = new MoveTo(0,0);
+	}
+	else{
+	    System.out.println("Board is null");
+	    this.moveTo = new MoveTo(100,100);
+	}
+    }
+
+    private int randomBetween(int min, int max){
+	if (min > max){
+	    int temp = min;
+	    min = max;
+	    max = temp;
+	}
+	return min + random.nextInt(max - min);
     }
 
     @Override
@@ -33,6 +53,6 @@ public class Wander extends Routine {
             succeed();
         } else if (this.moveTo.isFailure()) {
             fail();
-        }
+	}
     }
 }

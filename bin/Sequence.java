@@ -40,7 +40,10 @@ public class Sequence extends Routine {
     @Override
     public void act(GameObject droid, Room board) {
 
-        currentRoutine.act(droid, board);
+	if (currentRoutine == null){
+	    return;
+	}
+	currentRoutine.act(droid, board);
         // if is still running, then carry on
         if (currentRoutine.isRunning()) {
             return;

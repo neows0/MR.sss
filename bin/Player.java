@@ -31,7 +31,6 @@ public class Player {
 	int dX = possessed.getDX();
 	int dY = possessed.getDY();
 	int dZ = possessed.getDZ();
-	int angle = possessed.facing.getAngle();
 	int ground = possessed.getGround();
 	int z = possessed.getZ();
 	if (a == d && w == s) {
@@ -46,11 +45,11 @@ public class Player {
 	    
 	    if (w) {
 		dY = -5;
-		angle = 90;
+
 	    }
 	    else {
 		dY = 5;
-		angle = 270;
+
 	    }
 	}
 	else if (w == s) { //a != d
@@ -59,32 +58,32 @@ public class Player {
 	    
 	    if (a) {
 		dX = -5;
-		angle = 180;
+
 	    }
 	    else {
 		dX = 5;
-		angle = 0;
+
 	    }
 	}
 	else if (w && a){
 	    dY = -5;
 	    dX = -5;
-	    angle = 135;
+
 	}
 	else if (w && d) {
 	    dY = -5;
 	    dX = 5;
-	    angle = 45;
+
 	}
 	else if (s && a) {
 	    dY = 5;
 	    dX = -5;
-	    angle = 225;
+
 	}
 	else if (s && d) {
 	    dY = 5;
 	    dX = 5;
-	    angle = 315;
+
 	}
 	else {
 	    if (dY != 0)
@@ -92,8 +91,6 @@ public class Player {
 	    if (dX != 0)
 		dX -= dX / Math.abs(dX);
 	}
-
-	possessed.facing.moveTowards(angle, 10);
 	
 
 	if (Game.input.getSpace()){

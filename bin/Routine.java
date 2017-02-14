@@ -3,15 +3,17 @@ public abstract class Routine {
     public enum RoutineState {
         Success,
         Failure,
-        Running
+        Running,
+	Waiting
     }
 
     protected RoutineState state;
 
-    protected Routine() { }
+    protected Routine() {
+	state = RoutineState.Waiting;
+    }
 
     public void start() {
-        System.out.println(">>> Starting routine: " + this.getClass().getSimpleName());
         this.state = RoutineState.Running;
     }
 
@@ -20,12 +22,10 @@ public abstract class Routine {
     public abstract void act(GameObject droid, Room board);
 
     protected void succeed() {
-        System.out.println(">>> Routine: " + this.getClass().getSimpleName() + " SUCCEEDED");
         this.state = RoutineState.Success;
     }
 
     protected void fail() {
-        System.out.println(">>> Routine: " + this.getClass().getSimpleName() + " FAILED");
         this.state = RoutineState.Failure;
     }
 
@@ -38,7 +38,7 @@ public abstract class Routine {
     }
 
     public boolean isRunning() {
-        return state.equals(RoutineState.Running);
+	    return state.equals(RoutineState.Running);
     }
 
     public RoutineState getState() {

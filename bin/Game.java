@@ -160,7 +160,9 @@ public class Game extends Canvas implements Runnable, MouseWatcher{
 	    }
 	}
 	else if (gameState == STATE.Menu){
-	    menu.tick();
+	    if(menu != null){
+		menu.tick();
+	    }
 	}
 	//hud.tick();
 	if (broadcasting) {
@@ -194,7 +196,9 @@ public class Game extends Canvas implements Runnable, MouseWatcher{
 	    //handler.player.invRender(g);
 	}
 	else if (gameState == STATE.Menu){
-	    menu.render(g);
+	    if (menu != null){
+		menu.render(g);
+	    }
 	}
 	
 	g.dispose();
