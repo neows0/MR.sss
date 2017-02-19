@@ -40,4 +40,12 @@ public class Routines {
         return new IsObjectInRange();
     }
 
+    public static Routine follow(GameObject droid){
+	return new Follow(droid);
+    }
+
+    public static Routine approach(GameObject droid){
+	return new Approach(droid);
+    }
+
 }

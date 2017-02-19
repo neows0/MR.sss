@@ -3,6 +3,7 @@ public class MoveTo extends Routine {
 
     protected int destX;
     protected int destY;
+    private int topSpeed;
 
     private int closeEnough;
 
@@ -11,6 +12,7 @@ public class MoveTo extends Routine {
         this.destX = destX;
         this.destY = destY;
 	closeEnough = 10;
+	topSpeed = 7;
     }
 
     public void reset() {
@@ -25,7 +27,7 @@ public class MoveTo extends Routine {
                 fail();
                 return;
 		}*/
-            if (!isObjectAtDestination(droid)) {
+            if (!isAtDestination(droid)) {
                 moveGameObject(droid);
             }
 	    else {
@@ -37,32 +39,16 @@ public class MoveTo extends Routine {
     }
 
     private void moveGameObject(GameObject droid) {
+	int x = droid.getX();
+	int y = droid.getY();
+	int dX = (x - destX);
+	int dY = (y - destY);
+	double angle = Math.atan2(dY,dX);
+        
+	droid.setDY(-(int)(Math.sin(angle) * (double)getSpeed(x,y)));
+	droid.setDX(-(int)(Math.cos(angle) * (double)getSpeed(x,y)));
 	
-	if (!isYCloseEnough(droid)) {
-	    if (destY > droid.getY()) {
-		droid.setDY(1);
-            } else {
-		droid.setDY(-1);
-	    }
-	    // System.out.println("Y = " + Integer.toString(droid.getY()));
-	    // System.out.println("destY = " + Integer.toString(destY));
-	}
-	else
-	    droid.setDY(0);
-	//System.out.println("Y = " + Integer.toString(droid.getY()));
-
-	//System.out.println("destY = " + Integer.toString(destY));
-
-	if (!isXCloseEnough(droid)) {
-	    if (destX > droid.getX()) {
-		droid.setDX(1);
-	    } else {
-		droid.setDX(-1);
-	    }
-	}
-	else
-	    droid.setDX(0);
-	if (isObjectAtDestination(droid)) {
+	if (isAtDestination(droid)) {
 	    //droid.setDX(0);
 	    //droid.setDY(0);
 	    System.out.println("arrived");
@@ -81,8 +67,48 @@ public class MoveTo extends Routine {
 	    destY > droid.getY() - closeEnough;
     }
 
-    private boolean isObjectAtDestination(GameObject droid) {
+    private int getSpeed(int x, int y){
+	int speed = 0;
+	if (getDistBetween(x,y) < closeEnough * 2)
+	    speed = topSpeed / 2;
+	else
+	    speed = topSpeed;
+	return speed;
+    }
+
+	    public int getDistBetween(int x, int y){
+	return Math.abs(x - destX) + Math.abs(y - destY);
+    }
+
+    public boolean isAtDestination(GameObject droid) {
 	return isXCloseEnough(droid) && isYCloseEnough(droid);
         //return destX == droid.getX() && destY == droid.getY();
+    }
+
+    public int getCloseEnough(){
+	return closeEnough;
+    }
+    
+    public int getDestX(){
+	return destX;
+    }
+    public int getDestY(){
+	return destY;
+    }
+    public int getTopSpeed(){
+	return topSpeed;
+    }
+    
+    public void setCloseEnough(int closeEnough){
+	this.closeEnough = closeEnough;
+    }
+    public void setDestX(int destX){
+	this.destX = destX;
+    }
+    public void setDestY(int destY){
+	this.destY = destY;
+    }
+    public void setTopSpeed(int topSpeed){
+	this.topSpeed = topSpeed;
     }
 }

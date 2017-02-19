@@ -93,7 +93,8 @@ public class Human extends GameObject {
     public void tick() {
 	
 	if (id == ID.AIUnit && brain == null){
-	    brain = Routines.repeat(Routines.wander(Game.lvl), -1);
+	    //brain = Routines.repeat(Routines.wander(Game.lvl), -1);
+	    brain = Routines.follow(Game.player.getEntity());
 	    brain.start();
 	    System.out.println("new brain");
 	}
